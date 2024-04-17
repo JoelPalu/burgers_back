@@ -1,28 +1,31 @@
 import promisePool from '../../utils/database.js';
 
+
+// GET ALL USERS
 const listAllUsers = async () => {
   const [rows] = await promisePool.query('SELECT * FROM user');
-  console.log('rows', rows);
   return rows;
 };
 
+
+// GET USER BY ID
 const findUserById = async (id) => {
   const [rows] = await promisePool.execute('SELECT * FROM user WHERE id = ?', [id]);
-  console.log('rows', rows);
   if (rows.length === 0) {
     return false;
   }
   return rows[0];
 };
 
+
+// CREATE NEW USER
 const addUser = async (user, file) => {
-  user = {
-    name: user.name !== undefined ? user.name : null,
-    username: user.username !== undefined ? user.username : null,
-    email: user.email !== undefined ? user.email : null,
-    role: user.role !== undefined ? user.role : null,
-    password: user.password !== undefined ? user.password : null
-  };
+  // Check if user is missing any required fields
+  for (const key in user) {
+    if (!user[key]) {
+      return false;
+    }
+  }
   if (file === undefined) {
     const file = {};
     file.path = "Public/default.svg";
@@ -30,13 +33,13 @@ const addUser = async (user, file) => {
   if (user.role === undefined) {
     user.role = 'user';
   }
-  console.log('user', user);
+
   const {name, username, email, role, password} = user;
-  const sql = `INSERT INTO user (username, email)
-               VALUES (?, ?)`;
-  const params = [username, email];
+  const sql = `INSERT INTO user (username, email, password)
+               VALUES (?, ?, ?)`;
+  const params = [username, email, password];
   const [result] = await promisePool.execute(sql, params);
-  console.log('result', result);
+
 
   const [rows] = await promisePool.execute('SELECT * FROM user WHERE id = ?', [result.insertId]);
   if (rows.length === 0) {
@@ -45,23 +48,29 @@ const addUser = async (user, file) => {
   return rows[0];
 };
 
+// UPDATE USER
+//Data is the new data, id is the id of the user to be updated, user is the user that is logged in, file is the new file
 const updateUser = async (data, id, user, file) => {
 
+  // Check if user is missing any required fields
   const tuser = await findUserById(id);
   console.log('data', data);
   console.log('Before tuser', tuser);
-  if (tuser.user_id !== user.user_id) {
+  if (tuser.id !== user.id) {
+    console.log('Unauthorized');
     return false;
   }
+  // Compare the data to the user and update the user with the new data
   for (const key in tuser) {
     if (data[key] !== undefined){
        tuser[key] = data[key];
     }
   }
   if (file !== undefined) {
-    tuser.file = file.path;
+    tuser.avatar = file.path;
   }
   console.log('After tuser', tuser);
+  // Updates whole user with new data. Thats why we compare the data before updating
   let sql = promisePool.format(
     `UPDATE user SET ? WHERE id = ?`,
     [tuser, id]
@@ -75,10 +84,12 @@ const updateUser = async (data, id, user, file) => {
   return {message: 'success'};
 }
 
+
+// REMOVE USER
 const removeUser = async (id, user) => {
   console.log('user', user, id);
 
-  if (Number(user.user_id) !== Number(id) && user.role !== 'admin') {
+  if (Number(user.id) !== Number(id) && user.role !== 'admin') {
     return {message: 'Unauthorized'};
   }
 
@@ -95,6 +106,7 @@ const removeUser = async (id, user) => {
   return {message: 'User removed successfully'};
 }
 
+// GET USER BY USERNAME
 const getUserByUsername = async (username) =>{
   const sql =  'SELECT * ' +
                       'FROM user ' +

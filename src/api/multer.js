@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
       extension = '.svg';
     }
 
-    cb(null, file.originalname + '-' + uniqueSuffix + extension);
+    cb(null, uniqueSuffix + extension);
   },
 });
 

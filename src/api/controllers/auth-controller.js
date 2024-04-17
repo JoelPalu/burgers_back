@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import {getUserByUsername} from '../models/user-model.js';
 import 'dotenv/config';
 
+// LOGIN
 const postLogin = async (req, res) => {
   const user = await getUserByUsername(req.body.username);
   if (!user) {

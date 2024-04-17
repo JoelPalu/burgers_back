@@ -67,7 +67,7 @@ const updateUser = async (data, id, user, file) => {
     }
   }
   if (file !== undefined) {
-    tuser.avatar = file.path;
+    tuser.avatar = file.filename;
   }
   console.log('After tuser', tuser);
   // Updates whole user with new data. Thats why we compare the data before updating
@@ -118,4 +118,12 @@ const getUserByUsername = async (username) =>{
   return rows[0];
 }
 
-export {listAllUsers, findUserById, addUser, updateUser, removeUser, getUserByUsername};
+const getAvatarById = async (id) => {
+  const [rows] = await promisePool.execute('SELECT avatar FROM user WHERE id = ?', [id]);
+  if (rows.length === 0) {
+    return false;
+  }
+  return rows[0];
+}
+
+export {listAllUsers, findUserById, addUser, updateUser, removeUser, getUserByUsername, getAvatarById};

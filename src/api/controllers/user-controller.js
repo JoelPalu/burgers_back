@@ -3,7 +3,7 @@ import {
   findUserById,
   addUser,
   removeUser,
-  updateUser,
+  updateUser, getAvatarById,
 } from '../models/user-model.js';
 import bcrypt from 'bcrypt';
 import promisePool from '../../utils/database.js';
@@ -72,4 +72,15 @@ const deleteUser = async (req, res) => {
   res.json({'response': response.message});
 }
 
-export {getUser, getUserById, postUser, putUser, deleteUser};
+const getAvatar = async (req, res) => {
+  const response = await (getAvatarById(req.params.id));
+  if (!response) {
+    res.sendStatus(404);
+    return;
+  }
+  console.log(response);
+  res.status(200);
+  res.json({'avatar': response.avatar});
+}
+
+export {getUser, getUserById, postUser, putUser, deleteUser, getAvatar};

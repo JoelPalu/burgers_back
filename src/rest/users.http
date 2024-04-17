@@ -31,6 +31,10 @@ GET http://localhost:3000/api/v1/auth/me
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsInVzZXJuYW1lIjoicGVwZSIsImVtYWlsIjoiZGFqc2lkamFza0BhZGtqc2thLmNvbW0iLCJhZGRyZXNzIjoiMCIsImF2YXRhciI6bnVsbCwiaWF0IjoxNzEzMzczNTMzLCJleHAiOjE3MTM0NTk5MzN9.bi_BKhhg9r06LND-tL3SgE4E0Ok1yB_QGnd4DfUxs00
 
 
+### Get avarar by id
+GET http://localhost:3000/api/v1/users/avatar/13
+
+
 ### Delete user
 DELETE http://localhost:3000/api/v1/users/12
 Content-Type: application/json

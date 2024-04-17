@@ -24,15 +24,21 @@ const addUser = async (user, file) => {
     password: user.password !== undefined ? user.password : null
   };
   if (file === undefined) {
+    const file = {};
     file.path = "Public/default.svg";
   }
+  if (user.role === undefined) {
+    user.role = 'user';
+  }
+  console.log('user', user);
   const {name, username, email, role, password} = user;
-  const sql = `INSERT INTO users (name, username, email, role, password, file)
-               VALUES (?, ?, ?, ?, ?, ?)`;
-  const params = [name, username, email, role, password, file.path];
+  const sql = `INSERT INTO user (username, email)
+               VALUES (?, ?)`;
+  const params = [username, email];
   const [result] = await promisePool.execute(sql, params);
+  console.log('result', result);
 
-  const [rows] = await promisePool.execute('SELECT * FROM users WHERE user_id = ?', [result.insertId]);
+  const [rows] = await promisePool.execute('SELECT * FROM user WHERE id = ?', [result.insertId]);
   if (rows.length === 0) {
     return false;
   }

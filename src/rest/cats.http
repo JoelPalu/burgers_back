@@ -1,8 +1,8 @@
-GET http://localhost:3000/api/v1/cat/
+GET http://localhost:3000/api/v1/
 Accept: application/json
 
 ###
-POST http://localhost:3000/api/v1/cat/
+POST http://localhost:3000/api/v1/users
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW

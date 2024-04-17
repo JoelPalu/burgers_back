@@ -3,17 +3,19 @@ import {
   findUserById,
   addUser,
   removeUser,
-  updateUser,
+  updateUser, getAvatarById,
 } from '../models/user-model.js';
 import bcrypt from 'bcrypt';
 import promisePool from '../../utils/database.js';
 
-const getUser = (req, res) => {
-  res.json(listAllUsers());
+//GET ALL USERS
+const getUser = async (req, res) => {
+  res.json(await listAllUsers());
 }
 
-const getUserById = (req, res) => {
-  const user = findUserById(req.params.id);
+//GET USER BY ID
+const getUserById = async (req, res) => {
+  const user = await findUserById(req.params.id);
   if (user) {
     res.json(user);
     res.status(200);
@@ -22,9 +24,12 @@ const getUserById = (req, res) => {
   }
 }
 
+
+//CREATE NEW USER
 const postUser = async (req, res) => {
   try {
-    req.body.password = bcrypt.hashSync(req.body.password, 10);
+    // Hash password
+    req.body.password = await bcrypt.hashSync(req.body.password, 10);
     const result = await addUser(req.body, req.file);
 
     if (!result) {
@@ -51,17 +56,31 @@ const postUser = async (req, res) => {
   }
 }
 
+
+//UPDATE USER
 const putUser = async (req, res) => {
   await updateUser(req.body, req.params.id, res.locals.user, req.file)
   res.status(200)
   res.json({message: 'User: ' + req.params.id + ' updated.'});
-
 }
 
+
+//DELETE USER
 const deleteUser = async (req, res) => {
   const response = await removeUser(req.params.id, res.locals.user);
   res.status(200);
   res.json({'response': response.message});
 }
 
-export {getUser, getUserById, postUser, putUser, deleteUser};
+const getAvatar = async (req, res) => {
+  const response = await (getAvatarById(req.params.id));
+  if (!response) {
+    res.sendStatus(404);
+    return;
+  }
+  console.log(response);
+  res.status(200);
+  res.json({'avatar': response.avatar});
+}
+
+export {getUser, getUserById, postUser, putUser, deleteUser, getAvatar};

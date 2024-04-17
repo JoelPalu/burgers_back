@@ -1,13 +1,13 @@
 import promisePool from '../../utils/database.js';
 
 const listAllUsers = async () => {
-  const [rows] = await promisePool.query('SELECT * FROM users');
+  const [rows] = await promisePool.query('SELECT * FROM user');
   console.log('rows', rows);
   return rows;
 };
 
 const findUserById = async (id) => {
-  const [rows] = await promisePool.execute('SELECT * FROM users WHERE user_id = ?', [id]);
+  const [rows] = await promisePool.execute('SELECT * FROM user WHERE id = ?', [id]);
   console.log('rows', rows);
   if (rows.length === 0) {
     return false;
@@ -24,15 +24,21 @@ const addUser = async (user, file) => {
     password: user.password !== undefined ? user.password : null
   };
   if (file === undefined) {
+    const file = {};
     file.path = "Public/default.svg";
   }
+  if (user.role === undefined) {
+    user.role = 'user';
+  }
+  console.log('user', user);
   const {name, username, email, role, password} = user;
-  const sql = `INSERT INTO users (name, username, email, role, password, file)
-               VALUES (?, ?, ?, ?, ?, ?)`;
-  const params = [name, username, email, role, password, file.path];
+  const sql = `INSERT INTO user (username, email)
+               VALUES (?, ?)`;
+  const params = [username, email];
   const [result] = await promisePool.execute(sql, params);
+  console.log('result', result);
 
-  const [rows] = await promisePool.execute('SELECT * FROM users WHERE user_id = ?', [result.insertId]);
+  const [rows] = await promisePool.execute('SELECT * FROM user WHERE id = ?', [result.insertId]);
   if (rows.length === 0) {
     return false;
   }
@@ -57,7 +63,7 @@ const updateUser = async (data, id, user, file) => {
   }
   console.log('After tuser', tuser);
   let sql = promisePool.format(
-    `UPDATE users SET ? WHERE user_id = ?`,
+    `UPDATE user SET ? WHERE id = ?`,
     [tuser, id]
   );
 
@@ -77,7 +83,7 @@ const removeUser = async (id, user) => {
   }
 
   let sql = promisePool.format(
-    `DELETE FROM users WHERE user_id = ?`,
+    `DELETE FROM user WHERE id = ?`,
     [id]
   );
 
@@ -91,7 +97,7 @@ const removeUser = async (id, user) => {
 
 const getUserByUsername = async (username) =>{
   const sql =  'SELECT * ' +
-                      'FROM users ' +
+                      'FROM user ' +
                       'WHERE username = ?';
   const [rows] = await promisePool.execute(sql, [username]);
   if (rows.length === 0){

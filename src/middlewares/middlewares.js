@@ -47,6 +47,7 @@ const notFoundHandler = (req, res, next) => {
 };
 
 const errorHandler = (err, req, res, next) => {
+  console.log("ErrorHandler:", err)
   res.status(err.status || 500);
   res.json({
     message: err.message,

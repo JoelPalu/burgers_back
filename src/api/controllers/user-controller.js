@@ -34,11 +34,8 @@ const postUser = async (req, res) => {
       return;
     }
 
-    if (result.user_id) {
+    if (result.id) {
       try {
-        const sql = 'INSERT INTO users (name, username, email, role, password, file) VALUES (?, ?, ?, ?, ?, ?)';
-        const params = [req.body.name, req.body.username, req.body.email, 'user', req.body.password, req.file.path];
-        promisePool.execute(sql, params);
         res.status(201).json({message: 'New user added.', result});
       } catch (error) {
         res.status(400).json({message: 'Failed to add user. Check your input data.' +error});

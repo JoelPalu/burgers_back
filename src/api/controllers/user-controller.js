@@ -15,7 +15,7 @@ const getUser = async (req, res) => {
 
 //GET USER BY ID
 const getUserById = async (req, res) => {
-  const user = await findUserById(req.params.id);
+  const user = await findUserById(req.params.id, res.locals.user);
   if (user) {
     res.json(user);
     res.status(200);
@@ -59,6 +59,9 @@ const postUser = async (req, res) => {
 
 //UPDATE USER
 const putUser = async (req, res) => {
+  if (req.body.password){
+    req.body.password = await bcrypt.hashSync(req.body.password, 10);
+  }
   await updateUser(req.body, req.params.id, res.locals.user, req.file)
   res.status(200)
   res.json({message: 'User: ' + req.params.id + ' updated.'});

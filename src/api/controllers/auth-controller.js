@@ -8,6 +8,7 @@ const postLogin = async (req, res) => {
   const user = await getUserByUsername(req.body.username);
   if (!user) {
     res.sendStatus(401);
+    res.message = 'Invalid username or password';
     return;
   }
 
@@ -16,13 +17,6 @@ const postLogin = async (req, res) => {
     return;
   }
   delete user.password;
-  /*const userWithNoPassword = {
-    user_id: user.user_id,
-    name: user.name,
-    username: user.username,
-    email: user.email,
-    role: user.role,
-  };*/
 
   const token = jwt.sign(user, process.env.JWT_SECRET, {
     expiresIn: '24h',

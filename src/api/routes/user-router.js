@@ -30,7 +30,7 @@ userRouter.route('/')
     postUser);
 
 userRouter.route('/:id')
-  .get(
+  .get(authenticateToken,
     validationErrors,
     getUserById)
   .put(authenticateToken,

@@ -21,9 +21,9 @@ const addProduct = async (product, file) => {
   !file ? (file = {name: null}) : file;
 
   console.log("product", product, "file", file);
-  const sql = `INSERT INTO Products (name, ingredients, type, price , category, image)
-               VALUES (?, ?, ?, ?, ?, ?)`;
-  const data = [name, ingredients, type, price, category, file.filename];
+  const sql = `INSERT INTO Products (name, price, image)
+               VALUES (?, ?, ?)`;
+  const data = [name, price, file.filename];
   const rows = await promisePool.execute(sql, data);
   if (rows[0].affectedRows === 0) {
     return false;
@@ -31,16 +31,6 @@ const addProduct = async (product, file) => {
   return {id: rows[0].insertId};
 };
 
-const getProductByName = async (name) => {
-  const sql = `SELECT *
-              FROM Products
-              WHERE name = ?`;
-  const [rows] = await promisePool.execute(sql, [name]);
-  if (rows.length === 0) {
-    return false;
-  }
-  return rows[0];
-};
 
 const removeProduct = async (id) => {
   const connection = await promisePool.getConnection();

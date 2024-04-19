@@ -2,7 +2,6 @@ import express from "express";
 import {validationErrors} from "../../middlewares/middlewares.js";
 import {
   getAllergies,
-  getAllergyByArray,
   postAllergy
 } from "../controllers/allergy-contoller.js";
 

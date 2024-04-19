@@ -20,6 +20,7 @@ const app = express();
 app.use(cors());
 
 app.use('/public', express.static('public'));
+app.use('/uploads', express.static('uploads'));
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));

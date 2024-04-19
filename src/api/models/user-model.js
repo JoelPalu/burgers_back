@@ -66,9 +66,12 @@ const updateUser = async (data, id, user, file) => {
        tuser[key] = data[key];
     }
   }
-  if (file !== undefined) {
+  if (file) {
     tuser.avatar = file.filename;
+  } else {
+    tuser.avatar = null;
   }
+
   console.log('After tuser', tuser);
   // Updates whole user with new data. Thats why we compare the data before updating
   let sql = promisePool.format(

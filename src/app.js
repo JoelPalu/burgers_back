@@ -8,12 +8,12 @@ import {
 import cors from 'cors';
 
 //Server
-const hostname ='10.120.32.57'
-const port = 80;
+// const hostname ='10.120.32.57'
+// const port = 80;
 
 //Localhost
-// const hostname = '127.0.0.1';
-// const port = 3000;
+const hostname = '127.0.0.1';
+const port = 80;
 
 const app = express();
 

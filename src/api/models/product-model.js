@@ -46,7 +46,6 @@ const removeProduct = async (id) => {
   const connection = await promisePool.getConnection();
   try {
     await connection.beginTransaction();
-    await connection.execute('DELETE FROM Products WHERE id = ?;', [id]);
 
     const sql = connection.format('DELETE FROM Products WHERE id = ?', [
       id,
@@ -62,7 +61,7 @@ const removeProduct = async (id) => {
     await connection.commit();
 
     return {
-      message: 'Products deleted',
+      message: 'Product deleted',
     };
   } catch (error) {
     await connection.rollback();

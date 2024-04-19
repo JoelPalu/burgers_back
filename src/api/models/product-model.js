@@ -99,7 +99,6 @@ export {
   listAllProducts,
   findProductById,
   addProduct,
-  getProductByName,
   removeProduct,
   updateProduct,
 };

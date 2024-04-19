@@ -7,7 +7,7 @@ import {
 } from '../models/product-model.js';
 
 const getProduct = async (req, res) => {
-  const products = res.json(await listAllProducts());
+  const products = await listAllProducts();
   if (!products) {
     res.sendStatus(404);
     return;

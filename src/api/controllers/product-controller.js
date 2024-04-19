@@ -5,6 +5,7 @@ import {
   updateProduct,
   removeProduct,
 } from '../models/product-model.js';
+import {addProductToIngredient} from "./ingredient-controller.js";
 
 const getProduct = async (req, res) => {
   const products = await listAllProducts();
@@ -26,16 +27,32 @@ const getProductById = async (req, res) => {
 
 const postProduct = async (req, res, next) => {
   try {
-    const result = await addProduct(req.body, req.file);
+    if (!req.body.name || !req.body.price || !req.body.ingredients) {
+      const error = new Error("Invalid or missing fields")
+      error.status = 400
+      next(error);
+      return;
+    }
 
+
+    const result = await addProduct(req.body, req.file);
     if (!result) {
       const error = new Error("Invalid or missing fields")
       error.status = 400
       next(error);
       return;
     }
+    const result2 = await addProductToIngredient(result.id, req.body.ingredients);
+    if (!result2) {
+
+
+      const error = new Error("Invalid or missing fields")
+      error.status = 400
+      next(error);
+      return;
+    }
     res.status(201);
-    res.json(result);
+    res.json(result2);
   } catch (error) {
     next(error)
   }

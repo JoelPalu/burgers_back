@@ -36,10 +36,9 @@ GET http://localhost:3000/api/v1/users/avatar/13
 
 
 ### Delete user
-DELETE http://localhost:3000/api/v1/users/12
+DELETE http://localhost:3000/api/v1/users/17
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoicGVwZSIsImVtYWlsIjoiZGFqc2lkamFza0BhZGtqc2thLmNvbW0iLCJhZGRyZXNzIjoiMCIsImlhdCI6MTcxMzM3MTg5MCwiZXhwIjoxNzEzNDU4MjkwfQ.w_KhEZ3-qxQfnvxCI_YjJoopbbRbyMxISknIEZsgXQ8
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsInVzZXJuYW1lIjoicGVwZSIsImVtYWlsIjoiZGFqc2lkamFza0BhZGtqc2thLmNvbW0iLCJhZGRyZXNzIjoiMCIsImF2YXRhciI6bnVsbCwiaWF0IjoxNzEzNDI2MDM1LCJleHAiOjE3MTM1MTI0MzV9.3EBYAjQxMcBNEa89ui4iDGSsRCEOGyoCrGzDY8lFjwI
 
 
 

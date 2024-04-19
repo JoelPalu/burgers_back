@@ -7,12 +7,20 @@ import {
 } from './middlewares/middlewares.js';
 import cors from 'cors';
 
+//Server
+// const hostname ='10.120.32.57'
+// const port = 80;
+
+//Localhost
 const hostname = '127.0.0.1';
+const port = 80;
+
 const app = express();
-const port = 3000;
+
 app.use(cors());
 
 app.use('/public', express.static('public'));
+app.use('/uploads', express.static('uploads'));
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));

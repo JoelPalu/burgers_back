@@ -7,7 +7,7 @@ import {
 } from '../models/product-model.js';
 
 const getProduct = async (req, res) => {
-  const products = res.json(await listAllProducts());
+  const products = await listAllProducts();
   if (!products) {
     res.sendStatus(404);
     return;
@@ -26,7 +26,7 @@ const getProductById = async (req, res) => {
 
 const postProduct = async (req, res, next) => {
   try {
-    const result = await addProduct(req.body);
+    const result = await addProduct(req.body, req.file);
     if (!result) {
       const error = new Error("Invalid or missing fields")
       error.status = 400

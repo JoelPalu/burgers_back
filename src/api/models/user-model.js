@@ -1,4 +1,5 @@
 import promisePool from '../../utils/database.js';
+import bcrypt from "bcrypt";
 
 
 // GET ALL USERS
@@ -9,7 +10,21 @@ const listAllUsers = async () => {
 
 
 // GET USER BY ID
-const findUserById = async (id) => {
+const findUserById = async (id, user) => {
+  console.log('user', user);
+  console.log('id', id);
+
+  // Debugging information
+  console.log('user.role:', user.role);
+  console.log('user.id:', user.id);
+  console.log('id:', id);
+  console.log('Number(user.id) !== id:', Number(user.id) !== Number(id));
+
+  if (user.role !== 'admin' && Number(user.id) !== Number(id) ){
+    console.log('Unauthorized triggered');
+    return false;
+  }
+  console.log('Authorized');
   const [rows] = await promisePool.execute('SELECT * FROM user WHERE id = ?', [id]);
   if (rows.length === 0) {
     return false;
@@ -26,18 +41,14 @@ const addUser = async (user, file) => {
       return false;
     }
   }
-  if (file === undefined) {
-    const file = {};
-    file.path = "Public/default.svg";
-  }
-  if (user.role === undefined) {
-    user.role = 'user';
+  if (!file.filename) {
+    file.filename = "default.svg";
   }
 
-  const {name, username, email, role, password} = user;
-  const sql = `INSERT INTO user (username, email, password)
-               VALUES (?, ?, ?)`;
-  const params = [username, email, password];
+  const {name, username, email, password} = user;
+  const sql = `INSERT INTO user (username, email, password, avatar)
+               VALUES (?, ?, ?, ?)`;
+  const params = [username, email, password, file.filename];
   const [result] = await promisePool.execute(sql, params);
 
 
@@ -53,12 +64,17 @@ const addUser = async (user, file) => {
 const updateUser = async (data, id, user, file) => {
 
   // Check if user is missing any required fields
-  const tuser = await findUserById(id);
+  const tuser = await findUserById(id, user);
   console.log('data', data);
   console.log('Before tuser', tuser);
-  if (tuser.id !== user.id) {
+
+
+  if (tuser.id !== user.id && user.role !== 'admin'){
     console.log('Unauthorized');
     return false;
+  }
+  if (tuser.role !== 'admin') {
+    delete data.email;
   }
   // Compare the data to the user and update the user with the new data
   for (const key in tuser) {
@@ -103,14 +119,16 @@ const removeUser = async (id, user) => {
 
   const [result] = await promisePool.execute(sql);
   console.log('result', result);
-  if (result.affectedRows === 0) {
+  if (result.affectedRows !== 0) {
     return {message: 'User removed successfully'};
   }
-  return {message: 'User removed successfully'};
+
+  return {message: 'Invalid data or user does not exist'};
 }
 
 // GET USER BY USERNAME
 const getUserByUsername = async (username) =>{
+
   const sql =  'SELECT * ' +
                       'FROM user ' +
                       'WHERE username = ?';

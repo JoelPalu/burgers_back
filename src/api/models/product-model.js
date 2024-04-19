@@ -16,11 +16,14 @@ const findProductById = async (id) => {
   return rows[0];
 };
 
-const addProduct = async (product) => {
-  const {name, ingredients, type} = product;
-  const sql = `INSERT INTO Products (name, ingredients, type)
-               VALUES (?, ?, ?)`;
-  const data = [name, ingredients, type];
+const addProduct = async (product, file) => {
+  const {name, ingredients, type, price, category} = product;
+  !file ? (file = {name: null}) : file;
+
+  console.log("product", product, "file", file);
+  const sql = `INSERT INTO Products (name, ingredients, type, price , category, image)
+               VALUES (?, ?, ?, ?, ?, ?)`;
+  const data = [name, ingredients, type, price, category, file.filename];
   const rows = await promisePool.execute(sql, data);
   if (rows[0].affectedRows === 0) {
     return false;

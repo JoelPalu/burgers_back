@@ -16,17 +16,32 @@ const findProductById = async (id) => {
   return rows[0];
 };
 
+
+/**
+ * ADD PRODUCT
+ * Required fields: name, price
+ * @param product req.body
+ * @param file req.file
+ * @returns {Promise<{id: number}|{message: string}>}
+ */
 const addProduct = async (product, file) => {
   const {name, ingredients, type, price, category} = product;
-  !file ? (file = {name: null}) : file;
 
-  console.log("product", product, "file", file);
+  //Check if file is null
+  file ? file : file.filename = null;
+
+  //Check if required fields are missing
+  if(!name || !price){
+    return {message: 'Missing required fields'}
+  }
+
   const sql = `INSERT INTO Products (name, price, image)
                VALUES (?, ?, ?)`;
   const data = [name, price, file.filename];
   const rows = await promisePool.execute(sql, data);
   if (rows[0].affectedRows === 0) {
-    return false;
+
+    return {message: 'Something went wrong with executing the query'};
   }
   return {id: rows[0].insertId};
 };

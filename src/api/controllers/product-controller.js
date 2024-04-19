@@ -27,6 +27,7 @@ const getProductById = async (req, res) => {
 const postProduct = async (req, res, next) => {
   try {
     const result = await addProduct(req.body, req.file);
+
     if (!result) {
       const error = new Error("Invalid or missing fields")
       error.status = 400

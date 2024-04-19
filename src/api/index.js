@@ -9,6 +9,5 @@ const router = express.Router();
 router.use('/users', userRouter);
 router.use('/auth', authRouter);
 router.use('/products', productRouter)
-router.use('/uploads', express.static('uploads'));
 
 export default router;

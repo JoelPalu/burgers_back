@@ -1,9 +1,10 @@
 import {
   getAllCategories,
   newCategory,
-  productToCategory
+  productToCategory,
+  listCategoriesByProductId
 } from "../models/category-model.js";
-import {getAllIngredients} from "../models/ingredient-model.js";
+
 
 const getCategories = async (req, res) => {
   const response = await getAllCategories();
@@ -48,4 +49,12 @@ const addProductToCategory = async (product_id, categories) => {
   return {message: 'All products categories added'}
 }
 
-export {getCategories, postCategory, addProductToCategory};
+const getCategoriesByProductId = async (req, res) => {
+  const response = await listCategoriesByProductId(req.params.id);
+  if (response.error) {
+    return {message: 'No categories found'};
+  }
+  res.json(response);
+}
+
+export {getCategories, postCategory, addProductToCategory, getCategoriesByProductId};

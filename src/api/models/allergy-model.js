@@ -29,6 +29,22 @@ const createAllergy = async (data, res) => {
   return {message: 'New allergy created'};
 }
 
+const listAllergiesByProductId = async (productId) => {
+  const sql = `SELECT DISTINCT allergies.name as allergy_names
+        FROM productToIngredient
+        LEFT JOIN Ingredients ON Ingredients.id = productToIngredient.ingredient_id
+        LEFT JOIN ingredientsToAllergy ON ingredientsToAllergy.ingredient_id = Ingredients.id
+        LEFT JOIN allergies ON allergies.id = ingredientsToAllergy.allergy_id
+        WHERE productToIngredient.product_id = ?`;
+
+  const params = [productId];
+  const [rows] = await promisePool.execute(sql, params);
+  if (rows.length === 0) {
+    return false;
+  }
+  return rows.map(row => row.allergy_names).filter(name => name !== null);
+}
+
 
 // const addIngredientToAllergy = async (allergies, id) => {
 //   for (const allergy of allergies) {
@@ -48,4 +64,5 @@ const createAllergy = async (data, res) => {
 export {
   getAllAlleries,
   createAllergy,
+  listAllergiesByProductId
 }

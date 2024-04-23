@@ -39,8 +39,22 @@ const ProductToIngredient = async (productId, ingredientId) => {
 
 }
 
+const listIngredientsByProductId = async (productId) => {
+  const sql = `SELECT Ingredients.* FROM Ingredients
+               JOIN productToIngredient
+               WHERE productToIngredient.product_id = ?`;
+
+  const params = [productId];
+  const [rows] = await promisePool.execute(sql, params);
+  if (rows.length === 0) {
+    return false;
+  }
+  return rows;
+}
+
 export {
   getAllIngredients,
   createIngredient,
   ProductToIngredient,
+  listIngredientsByProductId
 }

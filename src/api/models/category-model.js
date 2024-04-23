@@ -42,5 +42,19 @@ console.log('productId', productId, 'categoryId', categoryId)
   return {message: 'All products categories added'};
 }
 
+const listCategoriesByProductId = async (productId) => {
+  const sql = `SELECT DISTINCT category.name FROM category
+               JOIN productToCategory
+               WHERE productToCategory.product_id = ?`;
 
-export {getAllCategories, newCategory, productToCategory};
+  const params = [productId];
+  const [rows] = await promisePool.execute(sql, params);
+  if (rows.length === 0) {
+    return false;
+  }
+  return rows;
+
+}
+
+
+export {getAllCategories, newCategory, productToCategory, listCategoriesByProductId};

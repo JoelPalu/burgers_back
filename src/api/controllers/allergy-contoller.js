@@ -1,7 +1,9 @@
 import {
   createAllergy,
-  getAllAlleries
+  getAllAlleries,
+  listAllergiesByProductId
 } from "../models/allergy-model.js";
+
 
 const getAllergies = async (req, res) => {
   const response = await (getAllAlleries());
@@ -12,6 +14,14 @@ const postAllergy = async (req, res) => {
   const response = await (createAllergy(req.body));
   !response.error ? res.json(response) : res.status(500).json(response);
 
+}
+
+const getAllergyByProductId = async (req, res) => {
+  const response = await listAllergiesByProductId(req.params.id);
+  if (response.error) {
+    return {message: 'No ingredients found'};
+  }
+  res.json(response);
 }
 
 
@@ -36,4 +46,5 @@ const postAllergy = async (req, res) => {
 export {
   getAllergies,
   postAllergy,
+  getAllergyByProductId
 }

@@ -7,6 +7,9 @@ import {
 } from '../models/product-model.js';
 import {addProductToIngredient} from "./ingredient-controller.js";
 import {addProductToCategory} from "./category-controller.js";
+import {listCategoriesByProductId} from "../models/category-model.js";
+import {listIngredientsByProductId} from "../models/ingredient-model.js";
+import {listAllergiesByProductId} from "../models/allergy-model.js";
 
 const getProduct = async (req, res) => {
   const products = await listAllProducts();
@@ -20,9 +23,32 @@ const getProduct = async (req, res) => {
 const getProductById = async (req, res) => {
   const product = await findProductById(req.params.id);
   if (!product) {
-    res.sendStatus(404);
+    res.sendStatus(404).message = "Product not found";
     return;
   }
+  const categories = await listCategoriesByProductId(req.params.id);
+  if (!categories) {
+    res.sendStatus(404).message = "Category not found";
+    return res.json(product);
+  }
+  product.categories = categories;
+
+
+  const ingredients = await listIngredientsByProductId(req.params.id);
+  if (!ingredients) {
+    res.sendStatus(404).message = "Ingredient not found";
+    return res.json(product);
+  }
+  product.ingredients = ingredients;
+
+  const allergies = await listAllergiesByProductId(req.params.id);
+  if (!allergies) {
+    res.sendStatus(404).message = "Allergy not found";
+    return res.json(product);
+  }
+  product.allergies = allergies;
+
+
   res.json(product);
 };
 

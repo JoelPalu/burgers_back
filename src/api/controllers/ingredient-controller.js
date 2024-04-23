@@ -1,6 +1,6 @@
 import {
   createIngredient,
-  getAllIngredients, ProductToIngredient
+  getAllIngredients, listIngredientsByProductId, ProductToIngredient
 } from "../models/ingredient-model.js";
 
 const getIngredients = async (req, res) => {
@@ -45,8 +45,17 @@ const addProductToIngredient = async (productId, ingredients) => {
 
 }
 
+const getIngredientsByProductId = async (req, res) => {
+  const response = await listIngredientsByProductId(req.params.id);
+  if (response.error) {
+    return {message: 'No ingredients found'};
+  }
+  res.json(response);
+}
+
 export {
   getIngredients,
   postIngredient,
   addProductToIngredient,
+  getIngredientsByProductId
 }

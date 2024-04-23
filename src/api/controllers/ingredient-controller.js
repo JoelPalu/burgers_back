@@ -2,6 +2,8 @@ import {
   createIngredient,
   getAllIngredients, listIngredientsByProductId, ProductToIngredient
 } from "../models/ingredient-model.js";
+import {addIngredientToAllergy} from "../models/allergy-model.js";
+import {getAllergies, postIngredientToAllergy} from "./allergy-contoller.js";
 
 const getIngredients = async (req, res) => {
   const response = await (getAllIngredients());
@@ -10,7 +12,9 @@ const getIngredients = async (req, res) => {
 
 const postIngredient = async (req, res) => {
   const response = await (createIngredient(req.body));
-  !response.error ? res.json(response) : res.status(500).json(response);
+  const addAllergies = await (postIngredientToAllergy(req.body.allergies, response));
+
+  !response.error ? res.json({response, addAllergies}) : res.status(500).json(response);
 
 }
 

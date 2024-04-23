@@ -1,4 +1,5 @@
 import {
+  addIngredientToAllergy,
   createAllergy,
   getAllAlleries,
   listAllergiesByProductId
@@ -26,25 +27,29 @@ const getAllergyByProductId = async (req, res) => {
 
 
 
-// const postAllergyByArray = async (req, res) => {
-//   const response = await (getAllAlleries());
-//   const allergies_id = [];
-//   const allergies = req.body.array.split(", ");
-//   const productId = req.body.id;
-//   for (const allergy of allergies) {
-//     if (!response.find(a => a.name === allergy)) {
-//       return res.status(400).json({error: 'Allergy does not exist or is misspelled. Add the allergy to database.'});
-//     }
-//     allergies_id.push(response.find(a => a.name === allergy).id);
-//   }
-//
-//   const responseAdd = await (addProductToAllergy(allergies_id, productId));
-//
-//   return res.status(200).json(allergies_id);
-// }
+const postIngredientToAllergy = async (req, res) => {
+  console.log('req', req)
+  const response = await (getAllAlleries());
+  const allergies_id = [];
+  let allergies = req.replace(/"/g, '');
+  allergies = allergies.replace(/ /g, '');
+  allergies = allergies.split(",");
+  const ingredient_id = res.id;
+  for (const allergy of allergies) {
+    if (!response.find(a => a.name === allergy)) {
+      return res.status(400).json({error: 'Allergy does not exist or is misspelled. Add the allergy to database.'});
+    }
+    allergies_id.push(response.find(a => a.name === allergy).id);
+  }
+
+  const responseAdd = await (addIngredientToAllergy(allergies_id, ingredient_id));
+
+  return {message: 'Allergies added to ingredient'};
+}
 
 export {
   getAllergies,
   postAllergy,
-  getAllergyByProductId
+  getAllergyByProductId,
+  postIngredientToAllergy
 }

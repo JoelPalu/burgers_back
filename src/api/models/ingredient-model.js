@@ -1,9 +1,13 @@
 import promisePool from '../../utils/database.js';
+import {getAllergyByIngredientId} from "./allergy-model.js";
 
 const getAllIngredients = async () => {
     const [rows] = await promisePool.query('SELECT * FROM Ingredients');
     if (rows.length === 0) {
       return false;
+    }
+    for (const row of rows) {
+      row.allergies = await getAllergyByIngredientId(row.id);
     }
     return rows;
 }
@@ -22,7 +26,8 @@ const createIngredient = async (data) => {
   if (rows[0].affectedRows === 0) {
     return {error: 'Something went wrong with executing the query'};
   }
-  return {message: 'New ingredient created'};
+  console.log('rows', rows)
+  return  {id: rows[0].insertId};
 }
 
 const ProductToIngredient = async (productId, ingredientId) => {

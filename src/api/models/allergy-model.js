@@ -46,23 +46,41 @@ const listAllergiesByProductId = async (productId) => {
 }
 
 
-// const addIngredientToAllergy = async (allergies, id) => {
-//   for (const allergy of allergies) {
-//     const sql = `INSERT INTO products_allergies (allergy_id, product_id)
-//                VALUES (?, ?)`;
-//     const params = [allergy, id];
-//     const rows = await promisePool.execute(sql, params);
-//     if (rows[0].affectedRows === 0) {
-//       return {error: 'Something went wrong with executing the query'};
-//     }
-//   }
-//   return {message: 'All products allergies added'};
-//
-// }
+const getAllergyByIngredientId = async (ingredientId) => {
+  const sql = `SELECT allergies.name
+               FROM ingredientsToAllergy
+               LEFT JOIN allergies ON allergies.id = ingredientsToAllergy.allergy_id
+               WHERE ingredientsToAllergy.ingredient_id = ?`;
+  const params = [ingredientId];
+  const [rows] = await promisePool.execute(sql, params);
+  if (rows.length === 0) {
+    return false;
+  }
+  return rows.map(row => row.name);
+
+}
+
+
+const addIngredientToAllergy = async (allergies, id) => {
+  console.log('allergies', allergies, 'id', id)
+  for (const allergy of allergies) {
+    const sql = `INSERT INTO ingredientsToAllergy (allergy_id, ingredient_id)
+               VALUES (?, ?)`;
+    const params = [allergy, id];
+    const rows = await promisePool.execute(sql, params);
+    if (rows[0].affectedRows === 0) {
+      return {error: 'Something went wrong with executing the query'};
+    }
+  }
+  return {message: 'All products allergies added'};
+
+}
 
 
 export {
   getAllAlleries,
   createAllergy,
-  listAllergiesByProductId
+  listAllergiesByProductId,
+  getAllergyByIngredientId,
+  addIngredientToAllergy
 }

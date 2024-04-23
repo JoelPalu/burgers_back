@@ -1,9 +1,9 @@
 import {
   addProduct,
-  listAllProducts,
   findProductById,
-  updateProduct,
+  listAllProducts,
   removeProduct,
+  updateProduct,
 } from '../models/product-model.js';
 import {addProductToIngredient} from "./ingredient-controller.js";
 import {addProductToCategory} from "./category-controller.js";
@@ -13,6 +13,13 @@ import {listAllergiesByProductId} from "../models/allergy-model.js";
 
 const getProduct = async (req, res) => {
   const products = await listAllProducts();
+  for (const product of products) {
+    product.categories = await listCategoriesByProductId(product.id);
+
+    product.ingredients = await listIngredientsByProductId(product.id);
+
+    product.allergies = await listAllergiesByProductId(product.id);
+  }
   if (!products) {
     res.sendStatus(404);
     return;

@@ -21,6 +21,7 @@ const addProductToIngredient = async (productId, ingredients) => {
   }
   const ingredients_id = [];
   ingredients.toLowerCase();
+  ingredients = ingredients.replace(/"/g, '');
   ingredients = ingredients.replace(/ /g, '');
   ingredients = ingredients.split(",");
 

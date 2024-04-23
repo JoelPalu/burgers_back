@@ -24,6 +24,7 @@ const addProductToCategory = async (product_id, categories) => {
   console.log(response)
   const categories_id = [];
   categories.toLowerCase();
+  categories = categories.replace(/"/g, '');
   categories = categories.replace(/ /g, '');
   categories = categories.split(",");
 

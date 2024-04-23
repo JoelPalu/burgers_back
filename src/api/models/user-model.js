@@ -44,11 +44,14 @@ const addUser = async (user, file) => {
   if (!file.filename) {
     file.filename = "default.svg";
   }
+  if (!user.address){
+    user.address = null;
+  }
 
-  const {name, username, email, password} = user;
-  const sql = `INSERT INTO user (username, email, password, avatar)
-               VALUES (?, ?, ?, ?)`;
-  const params = [username, email, password, file.filename];
+  const {name, username, email, password, address} = user;
+  const sql = `INSERT INTO user (username, email, password, avatar, address)
+               VALUES (?, ?, ?, ?, ?)`;
+  const params = [username, email, password, file.filename, address];
   const [result] = await promisePool.execute(sql, params);
 
 

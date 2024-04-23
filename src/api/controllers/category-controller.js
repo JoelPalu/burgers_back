@@ -37,7 +37,7 @@ const addProductToCategory = async (product_id, categories) => {
     }
     categories_id.push(response.find(i => i.name === category).id);
   }
-
+  console.log('categories_id', categories_id)
   for (const id of categories_id) {
     console.log('id', id, 'product_id', product_id)
     const responseAdd = await (productToCategory(product_id, id));

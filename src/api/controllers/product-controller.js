@@ -61,7 +61,7 @@ const getProductById = async (req, res) => {
 
 const postProduct = async (req, res, next) => {
   try {
-    if (!req.body.name || !req.body.price || !req.body.ingredients) {
+    if (!req.body.name || !req.body.price || !req.body.ingredients || !req.body.category) {
       const error = new Error("Invalid or missing fields, name/price/ingredients/category required")
       error.status = 400
       next(error);

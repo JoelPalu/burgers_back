@@ -43,8 +43,8 @@ console.log('productId', productId, 'categoryId', categoryId)
 }
 
 const listCategoriesByProductId = async (productId) => {
-  const sql = `SELECT DISTINCT category.name FROM category
-               JOIN productToCategory
+  const sql = `SELECT DISTINCT category.name FROM productToCategory
+               JOIN category ON category.id = productToCategory.category_id
                WHERE productToCategory.product_id = ?`;
 
   const params = [productId];

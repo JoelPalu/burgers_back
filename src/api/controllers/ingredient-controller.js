@@ -20,8 +20,10 @@ const addProductToIngredient = async (productId, ingredients) => {
     return response;
   }
   const ingredients_id = [];
+  ingredients.toLowerCase();
   ingredients = ingredients.replace(/ /g, '');
   ingredients = ingredients.split(",");
+
   for (const ingredient of ingredients) {
     console.log('ingredient', ingredient)
     if (!response.find(i => i.name === ingredient)) {

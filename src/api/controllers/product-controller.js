@@ -6,6 +6,7 @@ import {
   removeProduct,
 } from '../models/product-model.js';
 import {addProductToIngredient} from "./ingredient-controller.js";
+import {addProductToCategory} from "./category-controller.js";
 
 const getProduct = async (req, res) => {
   const products = await listAllProducts();
@@ -28,7 +29,7 @@ const getProductById = async (req, res) => {
 const postProduct = async (req, res, next) => {
   try {
     if (!req.body.name || !req.body.price || !req.body.ingredients) {
-      const error = new Error("Invalid or missing fields")
+      const error = new Error("Invalid or missing fields, name/price/ingredients/category required")
       error.status = 400
       next(error);
       return;
@@ -37,22 +38,29 @@ const postProduct = async (req, res, next) => {
 
     const result = await addProduct(req.body, req.file);
     if (!result) {
-      const error = new Error("Invalid or missing fields")
+      const error = new Error("Invalid or missing fields. name or price")
       error.status = 400
       next(error);
       return;
     }
-    const result2 = await addProductToIngredient(result.id, req.body.ingredients);
-    if (!result2) {
+    const resultIngredient = await addProductToIngredient(result.id, req.body.ingredients);
+    if (!resultIngredient) {
 
 
-      const error = new Error("Invalid or missing fields")
+      const error = new Error("Invalid or missing fields. ingredients missing or invalid")
+      error.status = 400
+      next(error);
+      return;
+    }
+    const resultCategory = await addProductToCategory(result.id, req.body.category);
+    if (!resultCategory) {
+      const error = new Error("Invalid or missing fields. category missing or invalid")
       error.status = 400
       next(error);
       return;
     }
     res.status(201);
-    res.json(result2);
+    res.json(resultCategory);
   } catch (error) {
     next(error)
   }

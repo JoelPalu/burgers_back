@@ -1,14 +1,14 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import {getUserByUsername} from '../models/user-model.js';
+import {getUserByEmail} from '../models/user-model.js';
 import 'dotenv/config';
 
 // LOGIN
 const postLogin = async (req, res) => {
-  const user = await getUserByUsername(req.body.username);
+  const user = await getUserByEmail(req.body.email);
   if (!user) {
     res.sendStatus(401);
-    res.message = 'Invalid username or password';
+    res.message = 'Invalid email or password';
     return;
   }
 

@@ -4,6 +4,7 @@ import 'dotenv/config';
 import {validationResult} from 'express-validator';
 import res from 'express/lib/response.js';
 import * as fs from 'fs';
+import {getUserByEmail} from "../api/models/user-model.js";
 
 const authenticateToken = (req, res, next) => {
 
@@ -76,4 +77,15 @@ const validationErrors = async (req, res, next) => {
   next();
 };
 
-export {createThumbnail, authenticateToken, notFoundHandler, errorHandler, validationErrors};
+const emailDublicateCheck = async (req, res, next) => {
+  const user = await getUserByEmail(req.body.email);
+  if (user) {
+    const error = new Error('Email already exists');
+    error.status = 400;
+    next(error);
+    return;
+  }
+  next();
+};
+
+export {createThumbnail, authenticateToken, notFoundHandler, errorHandler, validationErrors, emailDublicateCheck};

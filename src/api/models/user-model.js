@@ -48,10 +48,10 @@ const addUser = async (user, file) => {
     user.address = null;
   }
 
-  const {name, username, email, password, address} = user;
-  const sql = `INSERT INTO user (username, email, password, avatar, address)
-               VALUES (?, ?, ?, ?, ?)`;
-  const params = [username, email, password, file.filename, address];
+  const {name, email, password, address} = user;
+  const sql = `INSERT INTO user (email, password, avatar, address)
+               VALUES (?, ?, ?, ?)`;
+  const params = [email, password, file.filename, address];
   const [result] = await promisePool.execute(sql, params);
 
 
@@ -130,11 +130,11 @@ const removeUser = async (id, user) => {
 }
 
 // GET USER BY USERNAME
-const getUserByUsername = async (username) =>{
+const getUserByEmail = async (username) =>{
 
   const sql =  'SELECT * ' +
                       'FROM user ' +
-                      'WHERE username = ?';
+                      'WHERE email = ?';
   const [rows] = await promisePool.execute(sql, [username]);
   if (rows.length === 0){
     return false;
@@ -150,4 +150,4 @@ const getAvatarById = async (id) => {
   return rows[0];
 }
 
-export {listAllUsers, findUserById, addUser, updateUser, removeUser, getUserByUsername, getAvatarById};
+export {listAllUsers, findUserById, addUser, updateUser, removeUser, getUserByEmail, getAvatarById};

@@ -11,10 +11,8 @@ POST http://localhost:3000/api/v1/users
 Content-Type: application/json
 
 {
-  "email": "dajsidjask@adkjska.comm",
-  "password": "pepe2",
-  "username": "pepe",
-  "name" : "dajsidjask"
+  "email": "test2@test.com",
+  "password": "pepe2"
 }
 
 ### Login
@@ -22,13 +20,13 @@ POST http://localhost:3000/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "username": "pepe",
+  "email": "test@test.com",
   "password": "pepe2"
 }
 
 ### Auth me
 GET http://localhost:3000/api/v1/auth/me
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsInVzZXJuYW1lIjoicGVwZSIsImVtYWlsIjoiZGFqc2lkamFza0BhZGtqc2thLmNvbW0iLCJhZGRyZXNzIjoiMCIsImF2YXRhciI6bnVsbCwiaWF0IjoxNzEzMzczNTMzLCJleHAiOjE3MTM0NTk5MzN9.bi_BKhhg9r06LND-tL3SgE4E0Ok1yB_QGnd4DfUxs00
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImFkZHJlc3MiOm51bGwsImF2YXRhciI6ImRlZmF1bHQuc3ZnIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3MTM5NjYxOTgsImV4cCI6MTcxNDA1MjU5OH0.lEf7aZO43ZlMnx83FPIUf6jldtI5kxV7LKwI1qkFIJo
 
 
 ### Get avarar by id

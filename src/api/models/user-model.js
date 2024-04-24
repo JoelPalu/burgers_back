@@ -129,13 +129,13 @@ const removeUser = async (id, user) => {
   return {message: 'Invalid data or user does not exist'};
 }
 
-// GET USER BY USERNAME
-const getUserByEmail = async (username) =>{
-
+// GET USER BY EMAIL
+const getUserByEmail = async (email) =>{
+  console.log('email', email)
   const sql =  'SELECT * ' +
                       'FROM user ' +
                       'WHERE email = ?';
-  const [rows] = await promisePool.execute(sql, [username]);
+  const [rows] = await promisePool.execute(sql, [email]);
   if (rows.length === 0){
     return false;
   }

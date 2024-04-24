@@ -26,6 +26,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use('/api/v1', api);
 
+
 app.use(notFoundHandler);
 app.use(validationErrors);
 app.use(errorHandler);

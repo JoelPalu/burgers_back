@@ -39,4 +39,15 @@ const getMe = async (req, res) => {
   }
 };
 
-export {postLogin,getMe ,getLogOut};
+
+const getEmail = async (req, res) => {
+  const user = await getUserByEmail(req.body.email);
+  if (user) {
+    res.json({message: 'Email already in use'});
+    return;
+  }
+  res.json({message: 'Email available'});
+};
+
+
+export {postLogin,getMe ,getLogOut, getEmail};

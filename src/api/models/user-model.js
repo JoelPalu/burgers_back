@@ -1,5 +1,4 @@
 import promisePool from '../../utils/database.js';
-import bcrypt from "bcrypt";
 
 
 // GET ALL USERS
@@ -68,7 +67,7 @@ const updateUser = async (data, id, user, file) => {
 
   // Check if user is missing any required fields
   const tuser = await findUserById(id, user);
-  console.log('data', data);
+
   console.log('Before tuser', tuser);
 
 
@@ -76,20 +75,25 @@ const updateUser = async (data, id, user, file) => {
     console.log('Unauthorized');
     return false;
   }
-  if (tuser.role !== 'admin') {
+  if (user.role !== 'admin') {
+    console.log('User is not admin');
     delete data.email;
   }
+  if (file.filename) {
+    tuser.avatar = file.filename;
+  }
+  if (!tuser.avatar){
+    tuser.avatar = 'default.svg';
+  }
+
+  console.log("tuser after avatar check",tuser);
   // Compare the data to the user and update the user with the new data
   for (const key in tuser) {
     if (data[key] !== undefined){
        tuser[key] = data[key];
     }
   }
-  if (file) {
-    tuser.avatar = file.filename;
-  } else {
-    tuser.avatar = null;
-  }
+
 
   console.log('After tuser', tuser);
   // Updates whole user with new data. Thats why we compare the data before updating

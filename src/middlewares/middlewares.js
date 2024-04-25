@@ -7,7 +7,6 @@ import * as fs from 'fs';
 import {getUserByEmail} from "../api/models/user-model.js";
 
 const authenticateToken = (req, res, next) => {
-
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 

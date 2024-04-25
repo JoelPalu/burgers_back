@@ -9,6 +9,6 @@ authRouter.route('/login').post(postLogin);
 authRouter.route('/logout').get(getLogOut);
 
 authRouter.route('/me').get(authenticateToken, getMe);
-authRouter.route('/email').get(getEmail);
+authRouter.route('/email/:email').get(getEmail);
 
 export default authRouter;

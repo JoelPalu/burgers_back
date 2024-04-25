@@ -41,7 +41,7 @@ const getMe = async (req, res) => {
 
 
 const getEmail = async (req, res) => {
-  const user = await getUserByEmail(req.body.email);
+  const user = await getUserByEmail(req.params.email);
   if (user) {
     res.json({state: false, message: 'Email already in use'});
     return;

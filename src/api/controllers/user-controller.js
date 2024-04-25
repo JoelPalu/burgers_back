@@ -89,7 +89,7 @@ const getAvatar = async (req, res) => {
 const putAvatar = async (req, res) => {
   await updateUser(req.body, req.params.id, res.locals.user, req.file)
   res.status(200)
-  res.json({message: 'User: ' + req.params.id + ' updated.'});
+  res.json({message: 'User: ' + req.params.id + ' updated.', avatar: req.file.filename});
 }
 
 export {getUser, getUserById, postUser, putUser, deleteUser, getAvatar, putAvatar};

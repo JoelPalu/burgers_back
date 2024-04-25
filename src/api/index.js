@@ -5,6 +5,7 @@ import productRouter from "./routes/product-router.js";
 import allergyRouter from "./routes/allergy-router.js";
 import ingredientRouter from "./routes/ingredient-router.js";
 import categoryRouter from "./routes/category-router.js";
+import orderRouter from "./routes/order-router.js";
 
 const router = express.Router();
 
@@ -15,5 +16,6 @@ router.use('/products', productRouter)
 router.use('/allergies', allergyRouter);
 router.use('/ingredients', ingredientRouter);
 router.use('/categories', categoryRouter);
+router.use('/orders', orderRouter);
 
 export default router;

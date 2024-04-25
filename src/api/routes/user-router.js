@@ -5,7 +5,7 @@ import {
   postUser,
   putUser,
   deleteUser,
-  getAvatar
+  getAvatar, putAvatar
 } from '../controllers/user-controller.js';
 import multer from 'multer';
 import {storage} from '../multer.js';
@@ -44,5 +44,9 @@ userRouter.route('/:id')
     validationErrors,
     deleteUser);
 
-userRouter.route('/avatar/:id').get(getAvatar);
+userRouter.route('/avatar/:id').get(getAvatar)
+  .put(authenticateToken,
+    upload.single('file'),
+    validationErrors,
+    putAvatar);
 export default userRouter;

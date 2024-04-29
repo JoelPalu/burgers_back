@@ -4,6 +4,9 @@ import promisePool from '../../utils/database.js';
 // GET ALL USERS
 const listAllUsers = async () => {
   const [rows] = await promisePool.query('SELECT * FROM user');
+  for (const row of rows) {
+    delete row.password;
+  }
   return rows;
 };
 

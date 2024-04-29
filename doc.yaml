@@ -1,0 +1,150 @@
+openapi: 3.0.3
+info:
+  title: Yep & Burgers API
+  description: This is the API documentation for the Yep & Burgers API. Developed by Kirill Saveliev & Teemu Kallio
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:3000/api/v1'
+  #- url: 'http://10.120.32.57/app/api/v1'
+
+tags:
+  - name: Users
+    description: User management
+  - name: Auth
+    description: Authentication
+  - name: Orders
+    description: Order management
+  - name: Products
+    description: Product management
+  - name: Categories
+    description: Category management
+  - name: Ingredients
+    description: Ingredient management
+  - name: Restaurants
+    description: Restaurant management
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        username:
+            type: string
+        email:
+            type: string
+        password:
+            type: string
+        role:
+            type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+paths:
+  /users:
+    get:
+      summary: Get all users
+      operationId: getAllUsers
+      description: 'Get all users from the database.
+      Admin role required.'
+
+      tags:
+        - Users
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+      security:
+        - bearerAuth: []
+
+
+    post:
+      summary: Create a user
+      operationId: createUser
+      tags:
+          - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /users/{userId}:
+    get:
+      summary: Get a user by ID
+      operationId: getUserById
+      tags:
+        - Users
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the user to get
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    put:
+      summary: Update a user
+      operationId: updateUser
+      tags:
+        - Users
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the user to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    delete:
+      summary: Delete a user
+      operationId: deleteUser
+      tags:
+        - Users
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the user to delete
+      responses:
+        '204':
+          description: No Content
+
+

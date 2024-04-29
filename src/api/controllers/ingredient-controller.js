@@ -11,12 +11,12 @@ const getIngredients = async (req, res) => {
 }
 
 const postIngredient = async (req, res) => {
-  const response = await (createIngredient(req.body));
+  let response = await (createIngredient(req.body));
   if (req.body.allergies){
-    const addAllergies = await (postIngredientToAllergy(req.body.allergies, response));
+      response = await (postIngredientToAllergy(req.body.allergies, response, res));
   }
 
-  !response.error ? res.json({response,}) : res.status(500).json(response);
+  !response.error ? res.json({response}) : res.status(500).json(response);
 
 }
 

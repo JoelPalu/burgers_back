@@ -1,4 +1,9 @@
-import {createOrder, fetchOrders, removeOrder} from "../models/order-model.js";
+import {
+  createOrder,
+  fetchOrders,
+  removeOrder,
+  updateOrder
+} from "../models/order-model.js";
 import {fetchRestaurants} from "../models/restaurant-model.js";
 import {orderToProducts} from "../models/product-model.js";
 
@@ -47,5 +52,15 @@ const postOrder = async (req, res) => {
 
 }
 
+const putOrder = async (req, res) => {
+  if (res.locals.user.role !== 'admin') {
+    return res.status(403).json({message: "Forbidden"});
+  }
+  const order = await updateOrder(req.body);
+  !order ?
+    res.status(404).json({message: "Order not updated"}) :
+    res.status(200).json(order);
+}
 
-export { getOrders, postOrder }
+
+export { getOrders, postOrder, putOrder }

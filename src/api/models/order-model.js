@@ -24,4 +24,16 @@ const removeOrder = async (id) => {
   console.log('Order removed:', id)
 };
 
-export { fetchOrders, createOrder, removeOrder };
+const updateOrder = async (body) => {
+
+  const status = "completed";
+  const sql = 'UPDATE orders SET state = ? WHERE id = ?';
+  const [result] = await promisePool.execute(sql, [status, body.order_id]);
+  if (result.affectedRows === 0) {
+    return false;
+  }
+  return {message: 'Order state updated'};
+
+};
+
+export { fetchOrders, createOrder, removeOrder, updateOrder };

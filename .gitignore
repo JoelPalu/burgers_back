@@ -9,7 +9,7 @@
 
 # Uploaded files
 uploads/*
-!uploads/.gitkeep
+!uploads/default.svg
 
 # Icon must end with two \r
 Icon

@@ -5,7 +5,7 @@ import {
   postUser,
   putUser,
   deleteUser,
-  getAvatar
+  getAvatar, putAvatar
 } from '../controllers/user-controller.js';
 import multer from 'multer';
 import {storage} from '../multer.js';
@@ -20,7 +20,9 @@ const userRouter = express.Router();
 const upload = multer({storage: storage});
 
 userRouter.route('/')
-  .get(getUser)
+  .get(authenticateToken,
+    validationErrors,
+    getUser)
   .post(upload.single('file'),
     body('email').isEmail().notEmpty(),
     body('password').isLength({ min: 5 }),
@@ -44,5 +46,9 @@ userRouter.route('/:id')
     validationErrors,
     deleteUser);
 
-userRouter.route('/avatar/:id').get(getAvatar);
+userRouter.route('/avatar/:id').get(getAvatar)
+  .put(authenticateToken,
+    upload.single('file'),
+    validationErrors,
+    putAvatar);
 export default userRouter;

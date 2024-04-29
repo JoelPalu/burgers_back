@@ -10,6 +10,11 @@ import promisePool from '../../utils/database.js';
 
 //GET ALL USERS
 const getUser = async (req, res) => {
+  if (res.locals.user.role !== 'admin') {
+    res.status(403);
+    res.json({message: 'Forbidden'});
+    return;
+  }
   res.json(await listAllUsers());
 }
 

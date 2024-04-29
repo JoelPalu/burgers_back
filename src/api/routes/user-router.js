@@ -20,7 +20,9 @@ const userRouter = express.Router();
 const upload = multer({storage: storage});
 
 userRouter.route('/')
-  .get(getUser)
+  .get(authenticateToken,
+    validationErrors,
+    getUser)
   .post(upload.single('file'),
     body('email').isEmail().notEmpty(),
     body('password').isLength({ min: 5 }),

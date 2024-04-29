@@ -1,5 +1,6 @@
 import {createOrder, fetchOrders, removeOrder} from "../models/order-model.js";
 import {fetchRestaurants} from "../models/restaurant-model.js";
+import {orderToProducts} from "../models/product-model.js";
 
 const getOrders = async (req, res) => {
   try {
@@ -11,8 +12,8 @@ const getOrders = async (req, res) => {
 }
 
 const postOrder = async (req, res) => {
-  req.body.user_id = 39;
-  req.body.address = 'yepLand 2';
+  req.body.user_id = res.locals.user.id;
+  //req.body.address = 'yepLand 2';
 
   const restaurants = await fetchRestaurants();
   const restaurant = restaurants.find((restaurant) => restaurant.address === req.body.restaurant);
@@ -23,8 +24,13 @@ const postOrder = async (req, res) => {
 
   req.body.date = Date.now();
 
+  if (!req.body.products) {
+    return res.status(404).json({message: "No products in order"});
+  }
+
   //must return the order id
   const order = await createOrder(req.body);
+  const products = await orderToProducts(req.body, order.insertId);
   !order ?
     res.status(404).json({message: "Order not created"}) :
     res.status(200).json({message: "Order created"});

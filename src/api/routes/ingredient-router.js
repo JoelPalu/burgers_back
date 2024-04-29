@@ -5,6 +5,7 @@ import {
   postIngredient,
   getIngredientsByProductId
 } from "../controllers/ingredient-controller.js";
+import {body} from "express-validator";
 
 
 
@@ -12,7 +13,10 @@ import {
 const ingredientRouter = express.Router();
 
 
-ingredientRouter.route('/').get(getIngredients).post(postIngredient);
+ingredientRouter.route('/').get(getIngredients).post(
+  body('cal').isNumeric(),
+  validationErrors,
+  postIngredient);
 
 ingredientRouter.route('/:id')
 //.get(getAllergyById).put(putAllergy).delete(deleteAllergy);

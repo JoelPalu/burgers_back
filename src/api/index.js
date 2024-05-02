@@ -6,6 +6,7 @@ import allergyRouter from "./routes/allergy-router.js";
 import ingredientRouter from "./routes/ingredient-router.js";
 import categoryRouter from "./routes/category-router.js";
 import orderRouter from "./routes/order-router.js";
+import restaurantsRouter from "./routes/resourants-router.js";
 
 const router = express.Router();
 
@@ -17,5 +18,6 @@ router.use('/allergies', allergyRouter);
 router.use('/ingredients', ingredientRouter);
 router.use('/categories', categoryRouter);
 router.use('/orders', orderRouter);
+router.use('/res', restaurantsRouter);
 
 export default router;

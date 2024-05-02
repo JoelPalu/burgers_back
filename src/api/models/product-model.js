@@ -98,7 +98,7 @@ const updateProduct = async (product, id) => {
 
 const orderToProducts = async (order, orderId) => {
 
-  const products = order.products.replace(/ /g, '').split(',');
+  const products = order.products.replace(/ /g, '').replace(/]/g, '').replace(/\[/g, '').split(',');
   for (let product of products) {
     const sql = `INSERT INTO orderToProduct (order_id, product_id)
                  VALUES (?, ?)`;

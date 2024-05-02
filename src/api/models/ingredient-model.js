@@ -46,7 +46,7 @@ const ProductToIngredient = async (productId, ingredientId) => {
 
 const listIngredientsByProductId = async (productId) => {
   const sql = `SELECT Ingredients.* FROM Ingredients
-               JOIN productToIngredient
+               JOIN productToIngredient on productToIngredient.ingredient_id = Ingredients.id
                WHERE productToIngredient.product_id = ?`;
 
   const params = [productId];

@@ -63,4 +63,12 @@ const putOrder = async (req, res) => {
 }
 
 
-export { getOrders, postOrder, putOrder }
+const deleteOrder = async (req, res) => {
+  if (res.locals.user.role !== 'admin') {
+    return res.status(403).json({message: "Forbidden"});
+  }
+  await removeOrder(req.params.id);
+  return res.status(200).json({message: `Order ${req.params.id} deleted`});
+};
+
+export { getOrders, postOrder, putOrder, deleteOrder }

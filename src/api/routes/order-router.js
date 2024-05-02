@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  deleteOrder,
   getOrders,
   postOrder,
   putOrder
@@ -8,6 +9,7 @@ import {
   authenticateToken,
   errorHandler, validationErrors
 } from "../../middlewares/middlewares.js";
+import {removeOrder} from "../models/order-model.js";
 
 const orderRouter = express.Router();
 
@@ -25,6 +27,10 @@ orderRouter.route("/")
         validationErrors,
         putOrder);
 
+orderRouter.route("/:id")
+  .delete(authenticateToken,
+          validationErrors,
+          deleteOrder);
 
 
 

@@ -30,7 +30,6 @@ const updateOrder = async (body) => {
     state: body.state,
     address: body.address,
     order_type: body.order_type,
-    date: body.date,
     res_id: body.res_id,
     user_id: body.user_id
   };

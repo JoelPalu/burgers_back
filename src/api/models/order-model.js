@@ -11,10 +11,10 @@ const fetchOrders = async () => {
 
 const createOrder = async (order) => {
 
-  console.log(order.user_id, order.restaurant, order.date, order.order_type, order.address)
+  console.log(order.user_id, order.res_id, order.date, order.order_type, order.address)
   const sql = 'INSERT INTO orders (user_id, res_id, date, order_type, address) VALUES (?, ?, ?, ?, ?)';
 
-  const [result] = await promisePool.execute(sql, [order.user_id, order.restaurant.id, order.date, order.order_type, order.address]);
+  const [result] = await promisePool.execute(sql, [order.user_id, order.res_id, order.date, order.order_type, order.address]);
   return result;
 };
 

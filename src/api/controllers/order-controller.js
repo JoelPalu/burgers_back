@@ -21,11 +21,10 @@ const postOrder = async (req, res) => {
   //req.body.address = 'yepLand 2';
 
   const restaurants = await fetchRestaurants();
-  const restaurant = restaurants.find((restaurant) => restaurant.address === req.body.restaurant);
-  if (!restaurant) {
-    return res.status(404).json({message: "Restaurant not found"});
-  }
-  req.body.restaurant = restaurant;
+  //const restaurant = restaurants.find((restaurant) => restaurant.address === req.body.restaurant);
+  ////  return res.status(404).json({message: "Restaurant not found"});
+  // }
+  //req.body.restaurant = restaurant;
 
   req.body.date = Date.now();
 
@@ -38,7 +37,7 @@ const postOrder = async (req, res) => {
   const products = await orderToProducts(req.body, order.insertId);
   !order ?
     res.status(404).json({message: "Order not created"}) :
-    res.status(200).json({message: "Order created"});
+    "";
 
   // const orderToProducts = await connectOrderToProducts(req.body, order.insertId);
   //

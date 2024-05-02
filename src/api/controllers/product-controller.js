@@ -100,6 +100,10 @@ const postProduct = async (req, res, next) => {
 };
 
 const putProduct = async (req, res) => {
+  if (res.locals.user.role !== 'admin') {
+    res.sendStatus(403);
+    return;
+  }
   const result = await updateProduct(req.body, req.params.id);
   if (!result) {
     res.sendStatus(400);

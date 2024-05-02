@@ -1,4 +1,5 @@
 import promisePool from '../../utils/database.js';
+import {json} from "express";
 
 const fetchOrders = async () => {
   const sql = 'SELECT * FROM orders';
@@ -25,10 +26,30 @@ const removeOrder = async (id) => {
 };
 
 const updateOrder = async (body) => {
+  const content = {
+    state: body.state,
+    address: body.address,
+    order_type: body.order_type,
+    date: body.date,
+    res_id: body.res_id,
+    user_id: body.user_id
+  };
+  const update =[];
+  const values = [];
+  for (const key in content) {
+    if (content[key] === undefined) {
+      delete content[key];
+    } else {
+      update.push(`${key} = ?`);
+      values.push(content[key]);
+    }
 
-  const status = "completed";
-  const sql = 'UPDATE orders SET state = ? WHERE id = ?';
-  const [result] = await promisePool.execute(sql, [status, body.order_id]);
+  }
+  values.push(body.order_id);
+
+
+  const sql = `UPDATE orders SET ${update.join(', ')} WHERE id = ?`;
+  const [result] = await promisePool.execute(sql, values);
   if (result.affectedRows === 0) {
     return false;
   }

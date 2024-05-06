@@ -26,7 +26,8 @@ const postOrder = async (req, res) => {
 
   //must return the order id
   const order = await createOrder(req.body);
-  const orderContent = JSON.parse(req.body.products);
+  console.log(order)
+  const orderContent = req.body.products;
   for (const product of orderContent) {
 
     //if the product is a custom product

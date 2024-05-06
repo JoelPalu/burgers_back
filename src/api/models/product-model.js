@@ -97,18 +97,14 @@ const updateProduct = async (product, id) => {
 
 
 const orderToProducts = async (order, orderId) => {
-
-  const products = order.products.replace(/ /g, '').replace(/]/g, '').replace(/\[/g, '').split(',');
-  for (let product of products) {
     const sql = `INSERT INTO orderToProduct (order_id, product_id)
                  VALUES (?, ?)`;
-    const data = [orderId, product];
+    const data = [orderId, order];
     const rows = await promisePool.execute(sql, data);
     if (rows[0].affectedRows === 0) {
       return false;
     }
-  }
-  return true;
+    return true;
 }
 
 export {

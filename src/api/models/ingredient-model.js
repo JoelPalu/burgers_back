@@ -36,9 +36,6 @@ const ProductToIngredient = async (productId, ingredientId) => {
                VALUES (?, ?)`;
   const params = [parseInt(productId), parseInt(ingredientId)];
   const rows = await promisePool.execute(sql, params);
-  if (rows[0].affectedRows === 0) {
-    return {error: 'Something went wrong with executing the query'};
-  }
   return {message: 'All products ingredients added'
 };
 
@@ -56,6 +53,17 @@ const listIngredientsByProductId = async (productId) => {
   }
   return rows;
 }
+
+const findIngredientByName = async (name) => {
+  const [rows] = await promisePool.execute(
+    'SELECT * FROM Ingredients WHERE name = ?',
+    [name]
+  );
+  if (rows.length === 0) {
+    return false;
+  }
+  return rows[0];
+};
 
 export {
   getAllIngredients,

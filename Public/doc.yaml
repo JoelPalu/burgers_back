@@ -1,0 +1,862 @@
+openapi: 3.0.3
+info:
+  title: Yep & Burgers API
+  description: This is the API documentation for the Yep & Burgers API. Developed by Kirill Saveliev & Teemu Kallio
+  version: 1.0.0
+servers:
+  #- url: 'http://localhost:3000/api/v1'
+  - url: 'http://10.120.32.57/app/api/v1'
+
+tags:
+  - name: Users
+    description: User management
+  - name: Auth
+    description: Authentication
+  - name: Orders
+    description: Order management
+  - name: Products
+    description: Product management
+  - name: Categories
+    description: Category management
+  - name: Ingredients
+    description: Ingredient management
+  - name: Restaurants
+    description: Restaurant management
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        email:
+            type: string
+        address:
+            type: string
+        role:
+            type: string
+        avatar:
+            type: string
+    Register:
+        type: object
+        properties:
+            email:
+                type: string
+            password:
+                type: string
+    UserPut:
+        type: object
+        properties:
+            email:
+                type: string
+            address:
+                type: string
+            role:
+                type: string
+            password:
+                type: string
+            avatar:
+                type: object
+    Auth:
+        type: object
+        properties:
+            email:
+                type: string
+            password:
+                type: string
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+paths:
+  /users:
+    get:
+      summary: Get all users
+      operationId: getAllUsers
+      description: 'Get all users from the database.
+      Admin role required.'
+
+      tags:
+        - Users
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+      security:
+        - bearerAuth: []
+
+
+    post:
+      summary: Create a user
+      operationId: createUser
+      tags:
+          - Users
+      requestBody:
+
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Register'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /users/{userId}:
+    get:
+      summary: Get a user by ID
+      operationId: getUserById
+      tags:
+        - Users
+      description: Get a user by ID. Only the user itself or an admin can access this endpoint.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the user to get
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+      security:
+        - bearerAuth: []
+    put:
+      summary: Update a user
+      operationId: updateUser
+      tags:
+        - Users
+      description: Update a user by ID. Only the user itself or an admin can access this endpoint.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the user to update
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserPut'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+      security:
+        - bearerAuth: []
+    delete:
+      summary: Delete a user
+      operationId: deleteUser
+      tags:
+        - Users
+      description: Delete a user by ID. Only the user itself or an admin can access this endpoint.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the user to delete
+      responses:
+        '204':
+          description:
+          content:
+            application/json:
+              schema:
+                type: string
+                description: User deleted
+      security:
+          - bearerAuth: []
+
+  /auth/login:
+    post:
+      summary: Login
+      operationId: loginUser
+      tags:
+        - Auth
+      description: Login to the application
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: JWT token
+                  user:
+                    $ref: '#/components/schemas/User'
+      security:
+        - bearerAuth: [ ]
+
+  /auth/logout:
+    get:
+      summary: Logout
+      operationId: logoutUser
+      tags:
+        - Auth
+      description: Logout from the application
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Logout successful message
+      security:
+        - bearerAuth: [ ]
+
+  /auth/me:
+    get:
+      summary: Get current user
+      operationId: getCurrentUser
+      tags:
+        - Auth
+      description: Get the current user
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+      security:
+        - bearerAuth: [ ]
+
+  /auth/email/{email}:
+    get:
+      summary: Get user by email
+      operationId: getUserByEmail
+      tags:
+        - Auth
+      description: Get a user by email
+      parameters:
+        - name: email
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Email of the user to get
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+      security:
+        - bearerAuth: [ ]
+
+  /orders:
+    get:
+      summary: Get all orders
+      operationId: getAllOrders
+      tags:
+        - Orders
+      description: Get all orders from the database. Requires authentication.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      format: int64
+                    user_id:
+                      type: integer
+                      format: int64
+                    res_id:
+                      type: integer
+                      format: int64
+                    date:
+                      type: string
+                      format: date-time
+                    order_type:
+                      type: string
+                    address:
+                      type: string
+      security:
+        - bearerAuth: []
+
+    post:
+      summary: Create an order
+      operationId: createOrder
+      tags:
+        - Orders
+      description: Create a new order. Requires authentication.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  format: int64
+                user_id:
+                  type: integer
+                  format: int64
+                res_id:
+                  type: integer
+                  format: int64
+                date:
+                  type: string
+                  format: date-time
+                order_type:
+                  type: string
+                address:
+                  type: string
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+                  user_id:
+                    type: integer
+                    format: int64
+                  res_id:
+                    type: integer
+                    format: int64
+                  date:
+                    type: string
+                    format: date-time
+                  order_type:
+                    type: string
+                  address:
+                    type: string
+      security:
+        - bearerAuth: []
+
+    put:
+      summary: Update an order
+      operationId: updateOrder
+      tags:
+        - Orders
+      description: Update an existing order. Requires authentication.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  format: int64
+                user_id:
+                  type: integer
+                  format: int64
+                res_id:
+                  type: integer
+                  format: int64
+                date:
+                  type: string
+                  format: date-time
+                order_type:
+                  type: string
+                address:
+                  type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+                  user_id:
+                    type: integer
+                    format: int64
+                  res_id:
+                    type: integer
+                    format: int64
+                  date:
+                    type: string
+                    format: date-time
+                  order_type:
+                    type: string
+                  address:
+                    type: string
+      security:
+        - bearerAuth: []
+
+  /orders/{orderId}:
+    delete:
+      summary: Delete an order
+      operationId: deleteOrder
+      tags:
+        - Orders
+      description: Delete an existing order by ID. Requires authentication.
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the order to delete
+      responses:
+        '204':
+          description: No Content
+      security:
+        - bearerAuth: []
+
+  /products:
+    get:
+      summary: Get all products
+      operationId: getAllProducts
+      tags:
+        - Products
+      description: Get all products from the database.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      format: int64
+                    name:
+                      type: string
+                    price:
+                      type: number
+                      format: float
+                    ingredients:
+                      type: array
+                      items:
+                        type: string
+                    category:
+                      type: string
+
+
+    post:
+      summary: Create a product
+      operationId: createProduct
+      tags:
+        - Products
+      description: Create a new product. Requires authentication.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  format: int64
+                name:
+                  type: string
+                price:
+                  type: number
+                  format: float
+                ingredients:
+                  type: array
+                  items:
+                    type: string
+                category:
+                  type: string
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+                  name:
+                    type: string
+                  price:
+                    type: number
+                  format: float
+                  ingredients:
+                    type: array
+                    items:
+                      type: string
+                  category:
+                    type: string
+      security:
+        - bearerAuth: []
+
+  /products/{productId}:
+    get:
+      summary: Get a product by ID
+      operationId: getProductById
+      tags:
+        - Products
+      description: Get a product by ID.
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the product to get
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+                  name:
+                    type: string
+                  price:
+                    type: number
+                    format: float
+                  ingredients:
+                    type: array
+                    items:
+                      type: string
+                  category:
+                    type: string
+    put:
+      summary: Update a product
+      operationId: updateProduct
+      tags:
+        - Products
+      description: Update an existing product by ID. Requires authentication.
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the product to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  format: int64
+                name:
+                  type: string
+                price:
+                  type: number
+                  format: float
+                ingredients:
+                  type: array
+                  items:
+                    type: string
+                category:
+                  type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+                  name:
+                    type: string
+                  price:
+                    type: number
+                    format: float
+                  ingredients:
+                    type: array
+                    items:
+                      type: string
+                  category:
+                    type: string
+      security:
+        - bearerAuth: []
+
+    delete:
+      summary: Delete a product
+      operationId: deleteProduct
+      tags:
+        - Products
+      description: Delete an existing product by ID. Requires authentication.
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the product to delete
+      responses:
+        '204':
+          description: No Content
+      security:
+        - bearerAuth: []
+
+  /categories:
+    get:
+      summary: Get all categories
+      operationId: getAllCategories
+      tags:
+        - Categories
+      description: Get all categories from the database. Requires authentication.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      format: int64
+                    name:
+                      type: string
+
+
+    post:
+      summary: Create a category
+      operationId: createCategory
+      tags:
+        - Categories
+      description: Create a new category. Requires authentication.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  format: int64
+                name:
+                  type: string
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+                  name:
+                    type: string
+      security:
+        - bearerAuth: []
+
+  /categories/product/{productId}:
+    get:
+      summary: Get categories by product ID
+      operationId: getCategoriesByProductId
+      tags:
+        - Categories
+      description: Get categories by product ID. Requires authentication.
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the product to get categories
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      format: int64
+                    name:
+                      type: string
+
+  /ingredients:
+    get:
+      summary: Get all ingredients
+      operationId: getAllIngredients
+      tags:
+        - Ingredients
+      description: Get all ingredients from the database.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      format: int64
+                    name:
+                      type: string
+                    cal:
+                      type: number
+    post:
+      summary: Create an ingredient
+      operationId: createIngredient
+      tags:
+        - Ingredients
+      description: Create a new ingredient. Requires authentication.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  format: int64
+                name:
+                  type: string
+                cal:
+                  type: number
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+                  name:
+                    type: string
+                  cal:
+                    type: number
+      security:
+        - bearerAuth: []
+
+  /ingredients/product/{productId}:
+    get:
+      summary: Get ingredients by product ID
+      operationId: getIngredientsByProductId
+      tags:
+        - Ingredients
+      description: Get ingredients by product ID. Requires authentication.
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the product to get ingredients
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      format: int64
+                    name:
+                      type: string
+                    cal:
+                      type: number
+      security:
+        - bearerAuth: []
+
+  /restaurants:
+    get:
+      summary: Get all restaurants
+      operationId: getRestaurants
+      tags:
+        - Restaurants
+      description: Get all restaurants from the database.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      format: int64
+                    name:
+                      type: string

@@ -6,7 +6,9 @@ import {
   validationErrors,
 } from './middlewares/middlewares.js';
 import cors from 'cors';
-
+import * as path from "path";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 //Server
 // const hostname ='10.120.32.57'
 // const port = 80;
@@ -31,6 +33,7 @@ app.use(notFoundHandler);
 app.use(validationErrors);
 app.use(errorHandler);
 
+
 app.get('/', (req, res) => {
   res.send('Welcome to my REST API!');
 });
@@ -38,6 +41,8 @@ app.get('/', (req, res) => {
 app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });
+
+
 
 export default app;
 

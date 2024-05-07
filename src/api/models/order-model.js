@@ -21,7 +21,7 @@ const createOrder = async (order) => {
 const removeOrder = async (id) => {
   const sql = 'DELETE FROM orders WHERE id = ?';
 
-  await promisePool.execute(sql, [id]);
+  await promisePool.  execute(sql, [id]);
   console.log('Order removed:', id)
 };
 

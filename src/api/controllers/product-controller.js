@@ -78,8 +78,6 @@ const postProduct = async (req, res, next) => {
     }
     const resultIngredient = await addProductToIngredient(result.id, req.body.ingredients);
     if (!resultIngredient) {
-
-
       const error = new Error("Invalid or missing fields. ingredients missing or invalid")
       error.status = 400
       next(error);

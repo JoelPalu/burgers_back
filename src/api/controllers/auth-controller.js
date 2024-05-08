@@ -6,6 +6,7 @@ import 'dotenv/config';
 // LOGIN
 const postLogin = async (req, res) => {
   const user = await getUserByEmail(req.body.email);
+  console.log('user', user)
   if (!user) {
     res.sendStatus(401);
     res.message = 'Invalid email or password';
@@ -14,6 +15,7 @@ const postLogin = async (req, res) => {
 
   if (!bcrypt.compareSync(req.body.password, user.password)) {
     res.sendStatus(401);
+    res.message = 'Invalid email or password';
     return;
   }
   delete user.password;

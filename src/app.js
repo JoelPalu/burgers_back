@@ -9,8 +9,6 @@ import cors from 'cors';
 import * as path from "path";
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import * as fs from "fs";
-import * as https from "https";
 //Server
 // const hostname ='10.120.32.57'
 // const port = 80;
@@ -44,15 +42,6 @@ app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });
 
-
-const serverOptions = {
-  key: fs.readFileSync('server.key'),
-  cert: fs.readFileSync('server.cert')
-};
-
-https.createServer(serverOptions, app).listen(443, () => {
-  console.log('Server running on port 443');
-});
 
 
 export default app;

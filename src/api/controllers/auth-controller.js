@@ -9,13 +9,13 @@ const postLogin = async (req, res) => {
   console.log('user', user)
   if (!user) {
     res.sendStatus(401);
-    res.message = 'Invalid email or password';
+    res.json({message: 'Invalid email or password'});
     return;
   }
 
   if (!bcrypt.compareSync(req.body.password, user.password)) {
     res.sendStatus(401);
-    res.message = 'Invalid email or password';
+    res.json({message: 'Invalid email or password'});
     return;
   }
   delete user.password;

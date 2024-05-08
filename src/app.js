@@ -46,8 +46,8 @@ app.listen(port, hostname, () => {
 
 
 const serverOptions = {
-  key: fs.readFileSync('ca.key'),
-  cert: fs.readFileSync('ca.cert')
+  key: fs.readFileSync('server.key'),
+  cert: fs.readFileSync('server.cert')
 };
 
 https.createServer(serverOptions, app).listen(443, () => {

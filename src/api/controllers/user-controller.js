@@ -36,6 +36,7 @@ const postUser = async (req, res) => {
     // Hash password
     req.body.password = await bcrypt.hashSync(req.body.password, 10);
     const result = await addUser(req.body, req.file);
+    delete result.password;
 
     if (!result) {
       const error = new Error('Invalid or missing fields');

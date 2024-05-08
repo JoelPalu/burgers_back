@@ -8,22 +8,20 @@ const postLogin = async (req, res) => {
   const user = await getUserByEmail(req.body.email);
   console.log('user', user)
   if (!user) {
-    res.sendStatus(401);
-    res.json({message: 'Invalid email or password'});
-    return;
+    return res.sendStatus(401).json({message: 'Invalid email or password'});
+
   }
 
   if (!bcrypt.compareSync(req.body.password, user.password)) {
-    res.sendStatus(401);
-    res.json({message: 'Invalid email or password'});
-    return;
+    return res.sendStatus(401).json({message: 'Invalid email or password'});
+
   }
   delete user.password;
 
   const token = jwt.sign(user, process.env.JWT_SECRET, {
     expiresIn: '24h',
   });
-  res.json({user: user, token});
+  return res.json({user: user, token});
 };
 
 const getLogOut = async (req, res) => {

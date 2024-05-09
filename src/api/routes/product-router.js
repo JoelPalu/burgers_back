@@ -8,7 +8,10 @@ import {
 } from '../controllers/product-controller.js';
 import multer from "multer";
 import {storageProducts,} from "../multer.js";
-import {validationErrors} from "../../middlewares/middlewares.js";
+import {
+  authenticateToken,
+  validationErrors,
+} from '../../middlewares/middlewares.js';
 
 const productRouter = express.Router();
 
@@ -20,6 +23,11 @@ productRouter.route('/')
     validationErrors,
     postProduct);
 
-productRouter.route('/:id').get(getProductById).put(putProduct).delete(deleteProduct);
+productRouter.route('/:id')
+  .get(getProductById)
+  .put(authenticateToken,
+  validationErrors,
+  putProduct)
+  .delete(deleteProduct);
 
 export default productRouter;

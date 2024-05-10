@@ -17,6 +17,13 @@ cd burgers_back
 npm install
 ```
 
+## Tietokannan rakenne
+
+
+| Tietokanta |
+| --- |
+|<img src="https://github.com/JoelPalu/burgers_back/assets/122282513/0eb47ca3-7a39-4aca-9562-89f464778b6c">|
+
 ## Käytetyt työkalut
 
 ### Kirjastot:

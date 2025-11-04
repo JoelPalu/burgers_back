@@ -35,7 +35,8 @@ userRouter.route('/:id')
   .get(authenticateToken,
     validationErrors,
     getUserById)
-  .put(authenticateToken,
+  .put(
+    authenticateToken,
     upload.single('file'),
     body('email').optional().isEmail(),
     body('password').optional().isLength({ min: 5 }),

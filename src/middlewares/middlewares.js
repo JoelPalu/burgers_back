@@ -4,7 +4,6 @@ import 'dotenv/config';
 import {validationResult} from 'express-validator';
 import res from 'express/lib/response.js';
 import * as fs from 'fs';
-import {getUserByEmail} from "../api/models/user-model.js";
 
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];

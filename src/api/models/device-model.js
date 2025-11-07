@@ -8,10 +8,22 @@ const fetchDevices = async () => {
 
 // CREATE NEW DEVICE
 const addDevice = async (device) => {
-  const { name } = device;
+  const { name, org } = device;
 
   if (!name) {
     return { message: 'Name is required' };
+  }
+
+  if (!org) {
+    return { message: 'Organization is required' };
+  }
+
+  const [orgCheck] = await promisePool.execute(
+    'SELECT * FROM organisations WHERE orgID = ?',
+    [device.org]
+  );
+  if (orgCheck.length === 0) {
+    return { message: 'Organization not found' };
   }
 
 
@@ -20,7 +32,14 @@ const addDevice = async (device) => {
     [name]
   );
 
-  return { deviceID: result.insertId, name };
+  const [deviceOrgResult] = await promisePool.execute(
+    'INSERT INTO deviceOwner (deviceID, orgID) VALUES (?, ?)',
+    [result.insertId, orgCheck[0].orgID]
+  );
+
+  return { deviceID: result.insertId, name, org: device.org};
+
+
 
 }
 

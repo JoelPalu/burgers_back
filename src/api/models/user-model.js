@@ -3,7 +3,7 @@ import promisePool from '../../utils/database.js';
 
 // GET ALL USERS
 const listAllUsers = async () => {
-  const [rows] = await promisePool.query('SELECT * FROM user');
+  const [rows] = await promisePool.query('SELECT * FROM users');
   for (const row of rows) {
     delete row.password;
   }
@@ -27,7 +27,7 @@ const findUserById = async (id, user) => {
     return false;
   }
   console.log('Authorized');
-  const [rows] = await promisePool.execute('SELECT * FROM user WHERE userID = ?', [id]);
+  const [rows] = await promisePool.execute('SELECT * FROM users WHERE userID = ?', [id]);
   if (rows.length === 0) {
     return false;
   }

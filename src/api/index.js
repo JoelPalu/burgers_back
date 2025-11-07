@@ -7,6 +7,7 @@ import ingredientRouter from "./routes/ingredient-router.js";
 import categoryRouter from "./routes/category-router.js";
 import orderRouter from "./routes/order-router.js";
 import orgRouter from "./routes/org-router.js";
+import deviceRouter from './routes/device-router.js';
 
 const router = express.Router();
 
@@ -19,5 +20,6 @@ router.use('/ingredients', ingredientRouter);
 router.use('/categories', categoryRouter);
 router.use('/orders', orderRouter);
 router.use('/org', orgRouter);
+router.use('/devices', deviceRouter);
 
 export default router;

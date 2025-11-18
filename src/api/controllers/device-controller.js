@@ -1,6 +1,6 @@
 
 import {
-  addDevice,
+  addDevice, addUserDevice,
   fetchDeviceById,
   fetchDevices, modifyDevice, removeDevice,
 } from '../models/device-model.js';
@@ -68,10 +68,27 @@ const deleteDevice = async (req, res) => {
     return res.status(404).json({ message: error.message });
   }
 }
+
+const addUsertoDevice = async (req, res) => {
+  try {
+    // Add user to device in the database
+    // Usere data is stored in res.locals.user by the authenticateToken middleware
+
+    await addUserDevice(req.body, res.locals.user);
+    return res.status(201).json({ message: 'User added to device' });
+
+  }
+  catch (error) {
+    return res.status(400).json({ message: error.message });
+
+  }
+}
+
 export {
   getDevices,
   postDevice,
   getDeviceById,
   putDevice,
   deleteDevice,
+  addUsertoDevice,
 };

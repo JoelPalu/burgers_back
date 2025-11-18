@@ -112,11 +112,48 @@ const addUserDevice = async (body, user) => {
 
 
   await promisePool.execute(
-    'INSERT INTO deviceadmin (userID, deviceID) VALUES (?, ?)',
+    'INSERT INTO useraccess (userID, deviceID) VALUES (?, ?)',
     [userID, deviceID]
   );
 
   return { message: 'User added to device' };
+}
+
+
+
+const checkUserAccessToDevice = async (userID, deviceID) => {
+
+
+  const [rows] = await promisePool.execute(
+    `SELECT * FROM useraccess
+     WHERE userID = ? AND deviceID = ?`,
+    [userID, deviceID]
+  );
+
+  return rows.length > 0;
+}
+
+const fetchDeviceStatus = async (deviceID) => {
+  const [rows] = await promisePool.execute(
+    'SELECT * FROM status WHERE deviceID = ?',
+    [deviceID]
+  );
+  if (rows.length === 0) {
+    throw new Error('Status not found for the device');
+  }
+
+
+  const status = rows[0];
+
+  const [rows1] = await promisePool.execute(
+    'SELECT * FROM alert WHERE deviceID = ?',
+    [deviceID]
+  );
+
+  status.alerts = rows1;
+
+
+  return status;
 }
 
 export {
@@ -126,4 +163,7 @@ export {
   modifyDevice,
   removeDevice,
   addUserDevice,
+  checkUserAccessToDevice,
+  fetchDeviceStatus
+
 };

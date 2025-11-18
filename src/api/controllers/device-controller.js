@@ -1,8 +1,8 @@
 
 import {
-  addDevice, addUserDevice,
+  addDevice, addUserDevice, checkUserAccessToDevice,
   fetchDeviceById,
-  fetchDevices, modifyDevice, removeDevice,
+  fetchDevices, fetchDeviceStatus, modifyDevice, removeDevice,
 } from '../models/device-model.js';
 
 
@@ -84,6 +84,32 @@ const addUsertoDevice = async (req, res) => {
   }
 }
 
+const getDeviceStatus = async (req, res) => {
+    try{
+      // check if user have access to device
+      console.log(req.params.id, res.locals.user.userID);
+      const user = await checkUserAccessToDevice(res.locals.user.userID, req.params.id);
+      console.log(user);
+
+      if (!user) {
+        return res.status(403).json({message: 'Access denied'});
+      }
+    }
+    catch (error) {
+      console.log(error);
+      return res.status(403).json({message: 'Access denied'});
+    }
+
+    // if user have right to access device, return device status
+  try{
+      const deviceStatus= await fetchDeviceStatus(req.params.id);
+      return res.status(200).json(deviceStatus);
+    }
+    catch (error) {
+      return res.status(404).json({message: error.message});
+    }
+}
+
 export {
   getDevices,
   postDevice,
@@ -91,4 +117,5 @@ export {
   putDevice,
   deleteDevice,
   addUsertoDevice,
+  getDeviceStatus
 };

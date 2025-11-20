@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import 'dotenv/config';
 import {validationResult} from 'express-validator';
 import * as fs from 'fs';
+import {getUserByUsername} from '../api/models/user-model.js';
 
 
 /*
@@ -95,4 +96,15 @@ const emailDublicateCheck = async (req, res, next) => {
   next();
 };
 
-export {createThumbnail, authenticateToken, notFoundHandler, errorHandler, validationErrors, emailDublicateCheck};
+const usernameDublicateCheck = async (req, res, next) => {
+  const user = await getUserByUsername(req.body.username);
+  if (user) {
+    const error = new Error('Username already exists');
+    error.status = 400;
+    next(error);
+    return;
+  }
+  next();
+}
+
+export {createThumbnail, authenticateToken, notFoundHandler, errorHandler, validationErrors, emailDublicateCheck, usernameDublicateCheck};

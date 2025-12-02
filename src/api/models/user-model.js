@@ -149,6 +149,7 @@ const removeUser = async (id, user) => {
   return {message: 'Invalid data or user does not exist'};
 }
 
+// GET USER BY USERNAME -- Used in authentication process. Not used directly anywhere else
 const getUserByUsername = async (username) =>{
 
   console.log('username', username)

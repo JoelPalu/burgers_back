@@ -7,7 +7,7 @@ import {
   addUsertoDevice,
   deleteDevice,
   getDeviceById,
-  getDevices, getDeviceStatus,
+  getDevices,
   postDevice, putDevice,
 } from '../controllers/device-controller.js';
 
@@ -26,7 +26,7 @@ deviceRouter.route('/')
 deviceRouter.route('/:id')
   .get(authenticateToken,
     validationErrors,
-    getDeviceStatus)
+    getDeviceById)
   .put(authenticateToken,
     validationErrors,
     putDevice)
@@ -38,8 +38,6 @@ deviceRouter.route('/user')
   .post(authenticateToken,
     validationErrors,
     addUsertoDevice)
-
-
 
 
 export default deviceRouter;

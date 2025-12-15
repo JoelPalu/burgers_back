@@ -2,6 +2,7 @@ import sharp from 'sharp';
 import jwt from 'jsonwebtoken';
 import 'dotenv/config';
 import {validationResult} from 'express-validator';
+import res from 'express/lib/response.js';
 import * as fs from 'fs';
 
 

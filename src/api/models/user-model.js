@@ -36,10 +36,6 @@ const findUserById = async (id, user) => {
 
 
 // CREATE NEW USER
-/*  Data is the user data, file is the uploaded file what could contain avatar. But only the file name is actually used.
-    Note that at this moment only email and password are required to create a new user
-    For future development, more fields can be added, but remember add them on database level as well.
-*/
 const addUser = async (user, file) => {
   // Check if user is missing any required fields
   for (const key in user) {
@@ -47,23 +43,17 @@ const addUser = async (user, file) => {
       return false;
     }
   }
-  /* Here we can apply default values for avatar and address if they are missing
-      Right now not in use for simplicity
-
   if (!file.filename) {
     file.filename = "default.svg";
   }
   if (!user.address){
     user.address = null;
   }
-  */
 
-  // seperate data from user object and run the insert query.
-  const {email, password} = user;
-  const sql = `INSERT INTO user (username, password)
-               VALUES (?, ?)`;
-  //add more parameters when more fields are added to user creation
-  const params = [email, password];
+  const {name, email, password, address} = user;
+  const sql = `INSERT INTO user (email, password, avatar, address)
+               VALUES (?, ?, ?, ?)`;
+  const params = [email, password, file.filename, address];
   const [result] = await promisePool.execute(sql, params);
 
 
@@ -158,9 +148,7 @@ const getUserByEmail = async (email) =>{
   }
   return rows[0];
 }
-// GET AVATAR BY ID
-// Not used at the moment
-/*
+
 const getAvatarById = async (id) => {
   const [rows] = await promisePool.execute('SELECT avatar FROM user WHERE id = ?', [id]);
   if (rows.length === 0) {
@@ -168,5 +156,5 @@ const getAvatarById = async (id) => {
   }
   return rows[0];
 }
- */
+
 export {listAllUsers, findUserById, addUser, updateUser, removeUser, getUserByEmail, getAvatarById};

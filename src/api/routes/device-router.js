@@ -4,7 +4,6 @@ import {
   validationErrors,
 } from '../../middlewares/middlewares.js';
 import {
-  addUsertoDevice,
   deleteDevice,
   getDeviceById,
   getDevices,
@@ -33,11 +32,6 @@ deviceRouter.route('/:id')
   .delete(authenticateToken,
     validationErrors,
     deleteDevice);
-
-deviceRouter.route('/user')
-  .post(authenticateToken,
-    validationErrors,
-    addUsertoDevice)
 
 
 export default deviceRouter;

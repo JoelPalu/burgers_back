@@ -79,51 +79,10 @@ const removeDevice = async (id) => {
   return { message: 'Device removed' };
 }
 
-// ADD USER TO DEVICE
-const addUserDevice = async (body, user) => {
-  const { deviceID } = body;
-  const userID = user.userID;
-
-  if (!deviceID) {
-    throw new Error('Device ID is required');
-  }
-  if (!userID) {
-    throw new Error('User ID is required');
-  }
-
-  // Check if device exists
-  const [deviceCheck] = await promisePool.execute(
-    'SELECT * FROM devices WHERE deviceID = ?',
-    [deviceID]
-  );
-  if (deviceCheck.length === 0) {
-    throw new Error('Device not found');
-  }
-
-  // Check if user exists
-  const [userCheck] = await promisePool.execute(
-    'SELECT * FROM users WHERE userID = ?',
-    [userID]
-  );
-  if (userCheck.length === 0) {
-    throw new Error('User not found');
-
-  }
-
-
-  await promisePool.execute(
-    'INSERT INTO deviceadmin (userID, deviceID) VALUES (?, ?)',
-    [userID, deviceID]
-  );
-
-  return { message: 'User added to device' };
-}
-
 export {
   fetchDevices,
   addDevice,
   fetchDeviceById,
   modifyDevice,
-  removeDevice,
-  addUserDevice,
+  removeDevice
 };

@@ -5,12 +5,6 @@ import {validationResult} from 'express-validator';
 import res from 'express/lib/response.js';
 import * as fs from 'fs';
 
-
-/*
-      authentication middleware. Verifies JWT token and attaches user info to res.locals.user where next middleware/controller can access it.
-      Useful to have user info available after authentication for authorization checks or user-specific operations.
-      removed need to get user info from db again in later middleware/controllers.
-*/
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
@@ -18,10 +12,6 @@ const authenticateToken = (req, res, next) => {
   if (token == null) {
     return res.sendStatus(401);
   }
-  /*  verify token
-      secret key should be stored in env variable for security and at least 20 chars long
-      if secret key is changed all existing tokens become invalid
-  */
   try {
     res.locals.user = jwt.verify(token, process.env.JWT_SECRET);
     next();

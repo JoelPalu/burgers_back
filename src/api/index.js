@@ -6,7 +6,7 @@ import deviceRouter from './routes/device-router.js';
 
 const router = express.Router();
 
-// router
+// bind base url for all cat routes to catRouter
 router.use('/users', userRouter);
 router.use('/auth', authRouter);
 router.use('/org', orgRouter);

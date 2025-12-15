@@ -40,7 +40,6 @@ The following NPM libraries are central to this project:
 - MySQL
 
 ## Documentation:
-    (Under construction)
 - [apiDoc](http://10.120.32.60/burgerpage/doc/documentation.html)
 
 

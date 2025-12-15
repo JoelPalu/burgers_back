@@ -22,19 +22,6 @@ const userRouter = express.Router();
 
 const upload = multer({storage: storage});
 
-/*
-  authenticateToken is used to protect routes that require authentication
-  You can extract user information from the token in res.locals.user
-
-  For example getUser, getUserById, putUser, deleteUser routes require a valid token to access
-  createThumbnail middleware is used to create a thumbnail of the uploaded image file
-  emailDublicateCheck middleware checks if the email already exists in the database before creating a new user
-  usernameDublicateCheck middleware checks if the username already exists in the database before creating a new user
-
- All processes include validateionErrors middleware to handle validation errors
- For example body('password').isLength({min: 5}) checks that password is at least 5 characters long
- As well it will reduce useless entries to the database
- */
 // you can add  body('email').isEmail().notEmpty() for email validation etc. Can be useful when integrating with office 365 account
 // Create new user route with validation and email duplicate check emailDublicateCheck,
 // For now username duplicate check only

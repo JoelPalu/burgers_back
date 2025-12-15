@@ -1,12 +1,5 @@
 import multer from 'multer';
 
-/*
-  Multer storage configuration for handling file uploads.
-  Files are stored in the 'uploads/' directory with unique filenames.
-  The filename is generated using the current timestamp and a random number,
-  along with the appropriate file extension based on the MIME type.
-*/
-
 const storage = multer.diskStorage({
   destination: function (req, file, cb){
     cb(null, 'uploads/');

@@ -7,7 +7,6 @@ import deviceRouter from './routes/device-router.js';
 const router = express.Router();
 
 // router
-// Used routers. these are after /api/v1 path
 router.use('/users', userRouter);
 router.use('/auth', authRouter);
 router.use('/org', orgRouter);

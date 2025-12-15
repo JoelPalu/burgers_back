@@ -11,10 +11,7 @@ import multer from 'multer';
 import {storage} from '../multer.js';
 import {
   authenticateToken,
-  createThumbnail,
-  emailDublicateCheck,
-  usernameDublicateCheck,
-  validationErrors,
+  createThumbnail, emailDublicateCheck, validationErrors,
 } from '../../middlewares/middlewares.js';
 import {body} from 'express-validator';
 
@@ -24,14 +21,12 @@ const upload = multer({storage: storage});
 
 // you can add  body('email').isEmail().notEmpty() for email validation etc. Can be useful when integrating with office 365 account
 // Create new user route with validation and email duplicate check emailDublicateCheck,
-// For now username duplicate check only
 userRouter.route('/')
   .get(authenticateToken,
     validationErrors,
     getUser)
   .post(upload.single('file'),
     body('password').isLength({min: 5}),
-    usernameDublicateCheck,
     validationErrors,
     createThumbnail,
     postUser);

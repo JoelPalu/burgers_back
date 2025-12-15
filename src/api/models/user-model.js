@@ -27,7 +27,7 @@ const findUserById = async (id, user) => {
     return false;
   }
   console.log('Authorized');
-  const [rows] = await promisePool.execute('SELECT * FROM user WHERE userID = ?', [id]);
+  const [rows] = await promisePool.execute('SELECT * FROM user WHERE id = ?', [id]);
   if (rows.length === 0) {
     return false;
   }
@@ -40,15 +40,13 @@ const findUserById = async (id, user) => {
     Note that at this moment only email and password are required to create a new user
     For future development, more fields can be added, but remember add them on database level as well.
 */
-const addUser = async (user) => {
+const addUser = async (user, file) => {
   // Check if user is missing any required fields
-
   for (const key in user) {
     if (!user[key]) {
       return false;
     }
   }
-  console.log('user', user);
   /* Here we can apply default values for avatar and address if they are missing
       Right now not in use for simplicity
 
@@ -59,18 +57,17 @@ const addUser = async (user) => {
     user.address = null;
   }
   */
+
   // seperate data from user object and run the insert query.
-  const {username, password} = user;
-  const sql = `INSERT INTO users (username, password)
+  const {email, password} = user;
+  const sql = `INSERT INTO user (username, password)
                VALUES (?, ?)`;
   //add more parameters when more fields are added to user creation
-  const params = [username, password];
+  const params = [email, password];
   const [result] = await promisePool.execute(sql, params);
 
 
-
-
-  const [rows] = await promisePool.execute('SELECT * FROM users WHERE userID = ?', [result.insertId]);
+  const [rows] = await promisePool.execute('SELECT * FROM user WHERE id = ?', [result.insertId]);
   if (rows.length === 0) {
     return false;
   }
@@ -114,7 +111,7 @@ const updateUser = async (data, id, user, file) => {
   console.log('After tuser', tuser);
   // Updates whole user with new data. Thats why we compare the data before updating
   let sql = promisePool.format(
-    `UPDATE users SET ? WHERE userID = ?`,
+    `UPDATE user SET ? WHERE id = ?`,
     [tuser, id]
   );
 
@@ -136,7 +133,7 @@ const removeUser = async (id, user) => {
   }
 
   let sql = promisePool.format(
-    `DELETE FROM users WHERE userID = ?`,
+    `DELETE FROM user WHERE id = ?`,
     [id]
   );
 
@@ -149,24 +146,8 @@ const removeUser = async (id, user) => {
   return {message: 'Invalid data or user does not exist'};
 }
 
-const getUserByUsername = async (username) =>{
-
-  console.log('username', username)
-  const sql =  'SELECT * ' +
-                      'FROM users ' +
-                      'WHERE username = ?';
-  const [rows] = await promisePool.execute(sql, [username]);
-  if (rows.length === 0){
-    return false;
-  }
-  return rows[0];
-}
-
-/*
-// GET USER BY EMAIL -- Used in authentication process. Not used directly anywhere else
-// we dont use it currently, but it can be useful in future development
+// GET USER BY EMAIL
 const getUserByEmail = async (email) =>{
-
   console.log('email', email)
   const sql =  'SELECT * ' +
                       'FROM user ' +
@@ -177,8 +158,6 @@ const getUserByEmail = async (email) =>{
   }
   return rows[0];
 }
-*/
-
 // GET AVATAR BY ID
 // Not used at the moment
 /*
@@ -190,4 +169,4 @@ const getAvatarById = async (id) => {
   return rows[0];
 }
  */
-export {listAllUsers, findUserById, addUser, updateUser, removeUser, getUserByUsername};
+export {listAllUsers, findUserById, addUser, updateUser, removeUser, getUserByEmail, getAvatarById};

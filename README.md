@@ -1,47 +1,56 @@
-# TE BMS API
+# Burgerpage API
 
-RESTful API if built part of Aavans EPS project for TE Connectivity
+Burgerpage RESTful API on rakennettu osana Metropolia amk tutkintoa toisella vuosikurssilla. API toimii ytheistyössä [Burgerpagen](https://github.com/teemueka/burgerpage) kanssa.
 
-## Requirements
-Before getting started, make sure you have met the following requirements:
-Node.js and npm installed on your machine. you can download them from [nodejs.org](https://nodejs.org/en).
+## Esivaatimukset
+Ennen aloittamista varmista, että olet täyttänyt seuraavat vaatimukset:
 
-## Installation
+Node.js: Projekti vaatii Node.js:n asennuksen. Voit ladata sen osoitteesta [nodejs.org](https://nodejs.org/en).
 
-Clone the repository and install the dependencies:
+## Asennusohjeet
+
+Kloonaa repositorio ja asenna riippuvuudet seuraavilla komennoilla:
 
 ```
-git clone https://github.com/JoelPalu/TE_back.git
-cd TE_back
+git clone https://github.com/JoelPalu/burgers_back.git
+cd burgers_back
 npm install
 ```
 
-## Used technologies
-
-### Libraries:
-
-The following NPM libraries are central to this project:
-- **[bcrypt](https://www.npmjs.com/package/bcrypt)**: Used for hashing passwords securely.
-- **[cors](https://www.npmjs.com/package/cors)**: Enable Cross-Origin Resource Sharing (CORS) in Express.js applications.
-- **[dotenv](https://www.npmjs.com/package/dotenv)**: Uses environment variables from a .env file to configure application settings.
-- **[express-validator](https://www.npmjs.com/package/express-validator)**: Express.js middleware for validating and sanitizing user input.
-- **[jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)**: Creates and verifies JSON Web Tokens (JWT) for authentication and secure data transmission.
-- **[multer](https://www.npmjs.com/package/multer)**: Middleware for handling multipart/form-data, primarily used for uploading files.
-- **[mysql2](https://www.npmjs.com/package/mysql2)**: MySQL client for Node.js with support for Promises and modern features.
-- **[nodemon](https://www.npmjs.com/package/nodemon)**: Automatically restarts the Node.js application when file changes are detected during development.
-- **[sharp](https://www.npmjs.com/package/sharp)**: High-performance image processing library for resizing, cropping, and converting images.
+## Tietokannan rakenne
 
 
-### Frameworks:
-- RESTful API built with [Express.js](https://expressjs.com/).
+| Tietokanta |
+| --- |
+|<img src="https://github.com/JoelPalu/burgers_back/assets/122282513/0eb47ca3-7a39-4aca-9562-89f464778b6c">|
 
-### Programming languages:
+## Käytetyt työkalut
+
+### Kirjastot:
+
+Seuraavat NPM-kirjastot ovat keskeisiä tässä projektissa:
+- **[bcrypt](https://www.npmjs.com/package/bcrypt)**: Käytetään salasanojen hashaukseen.
+- **[cors](https://www.npmjs.com/package/cors)**: Mahdollistaa CORS (Cross-Origin Resource Sharing) -asetusten hallinnan.
+- **[dotenv](https://www.npmjs.com/package/dotenv)**: Käytetään ympäristömuuttujien hallintaan `.env`-tiedostosta.
+- **[express-validator](https://www.npmjs.com/package/express-validator)**: Express.js-sovelluksille tarkoitettu kirjasto syötteen validointiin ja puhdistukseen.
+- **[jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)**: Käytetään JSON Web Tokenien luomiseen ja varmentamiseen.
+- **[multer](https://www.npmjs.com/package/multer)**: Middleware tiedostojen käsittelyyn, joka on tarkoitettu lähinnä multipart/form-data -tyyppisten tiedostojen käsittelyyn.
+- **[mysql2](https://www.npmjs.com/package/mysql2)**: MySQL-tietokantayhteys ja suoritus.
+- **[nodemon](https://www.npmjs.com/package/nodemon)**: Automaattisesti uudelleenkäynnistää node-sovelluksen, kun projektihakemiston tiedostoissa tapahtuu muutoksia.
+- **[sharp](https://www.npmjs.com/package/sharp)**: Kuvien käsittelyyn käytetty kirjasto, joka mahdollistaa suorituskykyisen kuvien muokkauksen.
+
+
+### Rungot:
+- RESTful API rakennettu [Express.js](https://expressjs.com/) avulla.
+
+### Ohjelmointikielet:
 - JavaScript
-- MySQL
+- mySQL
 
-## Documentation:
+## Documentaatio: 
 - [apiDoc](http://10.120.32.60/burgerpage/doc/documentation.html)
 
 
-## Developers:
+## Tekijät:
+- [Teemu Kallio](https://github.com/teemueka)
 - [Kirill Saveliev](https://github.com/JoelPalu)

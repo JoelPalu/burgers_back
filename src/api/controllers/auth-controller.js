@@ -17,10 +17,9 @@ const postLogin = async (req, res) => {
 
   }
   delete user.password;
-  // Create JWT token and experation time. Normally its 15 minutes for security reasons. For testing we can set it longer.
-  //TODO : set experation time to 15min in production
+
   const token = jwt.sign(user, process.env.JWT_SECRET, {
-    expiresIn: '24h',
+    expiresIn: '15m',
   });
   return res.json({user: user, token});
 };

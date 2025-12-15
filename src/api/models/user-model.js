@@ -67,9 +67,6 @@ const addUser = async (user) => {
   const params = [username, password];
   const [result] = await promisePool.execute(sql, params);
 
-
-
-
   const [rows] = await promisePool.execute('SELECT * FROM users WHERE userID = ?', [result.insertId]);
   if (rows.length === 0) {
     return false;
@@ -152,7 +149,7 @@ const removeUser = async (id, user) => {
 // GET USER BY USERNAME -- Used in authentication process. Not used directly anywhere else
 const getUserByUsername = async (username) =>{
 
-  console.log('username', username)
+
   const sql =  'SELECT * ' +
                       'FROM users ' +
                       'WHERE username = ?';
